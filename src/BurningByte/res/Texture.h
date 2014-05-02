@@ -1,7 +1,7 @@
 /*
  * Texture
  * Author: Marvin Blum
- * Last Update: 2014/03/20 00:09
+ * Last Update: 2014/05/03 01:01
  * */
 
 #ifndef TEXTURE_H_
@@ -12,6 +12,7 @@
 #include <GL/gl3w.h>
 #include "../Component.h"
 #include "files/tgaFile.h"
+#include "../math/Vector.h"
 
 namespace bb{
 
@@ -51,6 +52,7 @@ class Texture:public Component{
 		unsigned int depth();
 		unsigned int getBitsPerPixel();
 		unsigned int getBytesPerPixel();
+		vec2 getSize();
 };
 
 };

@@ -218,4 +218,8 @@ unsigned int Texture::getBytesPerPixel(){
 	return bytesPerPixel;
 }
 
+vec2 Texture::getSize(){
+	return vec2(size[0], size[1]);
+}
+
 };

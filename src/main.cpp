@@ -9,6 +9,9 @@
 
 #include "BurningByte/res/files/cfgFile.h"
 #include "BurningByte/state/StateManager.h"
+#include "states/Intro.h"
+#include "states/MainMenu.h"
+#include "states/Controls.h"
 #include "states/Playing.h"
 
 // window
@@ -45,7 +48,12 @@ bool setup(){
 	glDisable(GL_CULL_FACE);
 
 	stateManager = std::unique_ptr<bb::StateManager>(new bb::StateManager());
+	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(wndSize[0], wndSize[1])));
+	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(wndSize[0], wndSize[1])));
+	stateManager->add("controls", std::shared_ptr<bb::State>(new Controls(wndSize[0], wndSize[1])));
 	stateManager->add("playing", std::shared_ptr<bb::State>(new Playing(wndSize[0], wndSize[1])));
+
+	stateManager->switchTo("playing");
 
 	std::cout<<"Loading done!"<<std::endl;
 
@@ -62,11 +70,6 @@ void mainLoop(){
 	deltaTime = 1.0f/fps;
 
 	render();
-
-	if(stateManager->currentName() == "playing"){
-		std::shared_ptr<Playing> playing = std::static_pointer_cast<Playing>(stateManager->get("playing"));
-		playing->fps = fps;
-	}
 
 	stateManager->current()->logic(deltaTime);
 

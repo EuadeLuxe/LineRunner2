@@ -15,10 +15,10 @@
 #include "../systems/Renderer2D.h"
 
 class Playing:public bb::State{
-	public:
+	private:
 		unsigned int wndSize[2];
-		float fps;
 
+	public:
 		std::vector<std::shared_ptr<bb::Texture>> textures;
 		std::vector<std::shared_ptr<bb::Sound>> sounds;
 

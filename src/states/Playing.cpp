@@ -1,7 +1,6 @@
 #include "Playing.h"
 
 Playing::Playing(const unsigned int width, const unsigned int height){
-	fps = 0.0f;
 	wndSize[0] = width;
 	wndSize[1] = height;
 }
@@ -25,18 +24,23 @@ void Playing::load(){
 	//// res
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 
-	sounds.push_back(std::shared_ptr<bb::Sound>(new bb::Sound()));
-
 	if(!textures[0]->loadTGA("res/textures/dk_games.tga")){
 		std::cerr<<"Could not load res/textures/dk_games.tga!"<<std::endl;
 	}
 
+	sounds.push_back(std::shared_ptr<bb::Sound>(new bb::Sound()));
 	sounds[0]->load("res/sounds/piano.wav");
 
+	// test
+	auto ss = std::shared_ptr<bb::SoundSource>(new bb::SoundSource(sounds[0], bb::vec3(), false));
+	ss->play();
+
 	//// entities
+	auto halfScreen = bb::vec2(wndSize[0]/2, wndSize[1]/2);
+
 	auto sprite = std::shared_ptr<bb::Entity>(new bb::Entity());
 	sprite->addComponent("Texture", textures[0]);
-	sprite->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(400.0f))));
+	sprite->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-textures[0]->width()/2, halfScreen.y-textures[0]->height()/2), textures[0]->getSize())));
 	sprite->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	//// systems
