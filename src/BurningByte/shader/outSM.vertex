@@ -1,0 +1,20 @@
+/*
+ * basic shader for rendering shadow mapping
+ */
+
+#version 330
+
+uniform mat4 pmv;
+uniform mat4 smPmv;
+
+in vec3 vertex0;
+in vec2 texCoord0;
+
+out vec4 shadowCoord;
+out vec2 texCoord;
+
+void main(){
+	shadowCoord = smPmv*vec4(vertex0, 1.0);
+	texCoord = texCoord0;
+	gl_Position = pmv*vec4(vertex0, 1.0);
+}

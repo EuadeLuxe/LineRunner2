@@ -1,0 +1,17 @@
+/*
+ * basic shader for FXAA rendering
+ */
+
+#version 330
+
+uniform mat4 pmv;
+
+in vec2 vertex0;
+
+out vec2 vertex;
+
+void main(){
+	vertex = vertex0;
+	gl_Position = vec4(vertex0*2.0-1.0, 0.0, 1.0);
+	gl_Position.z = 0.0;
+}

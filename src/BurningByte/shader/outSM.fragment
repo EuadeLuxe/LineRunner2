@@ -1,0 +1,30 @@
+#version 330
+
+#define BIAS 0.0005
+
+precision highp float;
+
+uniform sampler2D shadowMap;
+uniform sampler2D texture0;
+uniform float ambient;
+
+in vec4 shadowCoord;
+in vec2 texCoord;
+
+void main(){
+	vec4 color = texture(texture0, texCoord);
+	
+	if(shadowCoord.w > 0.0){
+		vec3 w = shadowCoord.xyz/shadowCoord.w;
+		vec2 smTexCoord = vec2(0.5*w.x+0.5, 0.5*w.y+0.5);
+		
+		float z = 0.5*w.z+0.5;
+		float depth = texture(shadowMap, smTexCoord).z;	
+		
+		if(depth < (z+BIAS)){
+			color *= 1.0-ambient;
+		}
+	}
+	
+	gl_FragColor = color;
+}

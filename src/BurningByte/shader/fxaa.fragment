@@ -1,0 +1,51 @@
+#version 330
+
+precision highp float;
+
+// FXAA settings
+uniform float quality = 0.0; // FXAA_SPAN_MAX = {0, 2, 4, 8}
+#define FXAA_REDUCE_MULT (1.0/8.0)
+#define FXAA_REDUCE_MIN (1.0/128.0)
+
+uniform sampler2D screen;
+uniform vec2 fboSize; // in pixel
+
+in vec2 vertex;
+
+void main(){	
+	vec3 rgbNW = vec3(texture(screen, vertex+vec2(-1.0, -1.0)/fboSize));
+	vec3 rgbSW = vec3(texture(screen, vertex+vec2(-1.0, 1.0)/fboSize));
+	vec3 rgbSE = vec3(texture(screen, vertex+vec2(1.0, 1.0)/fboSize));
+	vec3 rgbNE = vec3(texture(screen, vertex+vec2(1.0, -1.0)/fboSize));
+	vec3 rgbM = vec3(texture(screen, vertex));
+	
+	vec3 luma = vec3(0.299, 0.587, 0.114);
+	float lumaNW = dot(rgbNW, luma);
+	float lumaSW = dot(rgbSW, luma);
+	float lumaSE = dot(rgbSE, luma);
+	float lumaNE = dot(rgbNE, luma);
+	float lumaM = dot(rgbM, luma);
+	
+	float rangeMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));
+	float rangeMax = max(lumaM, max(min(lumaNW, lumaNE), max(lumaSW, lumaSE)));
+	float range = rangeMax-rangeMin;
+	
+	vec2 dir = vec2(-((lumaNW+lumaNE)-(lumaSW+lumaSE)), ((lumaNW+lumaSW)-(lumaNE+lumaSE)));
+	float dirReduce = max((lumaNW+lumaNE+lumaSW+lumaSE)*(0.25*FXAA_REDUCE_MULT), FXAA_REDUCE_MIN);
+	float rcpDirMin = 1.0/(min(abs(dir.x), abs(dir.y))+dirReduce);
+
+	dir = min(vec2(quality, quality), max(vec2(-quality, -quality), dir*rcpDirMin))/fboSize;
+	
+	vec3 rgbA = (1.0/2.0)*(texture(screen, vertex+dir*(1.0/3.0-0.5)).xyz+texture(screen, vertex+dir*(2.0/3.0-0.5)).xyz);
+	vec3 rgbB = rgbA*(1.0/2.0)+(1.0/4.0)*(texture(screen, vertex+dir*(0.0/3.0-0.5)).xyz+texture(screen, vertex+dir*(3.0/3.0-0.5)).xyz);
+	float lumaB = dot(rgbB, luma);
+	
+	if((lumaB < rangeMin) || (lumaB > rangeMax)){
+		gl_FragColor.xyz = rgbA;
+	}
+	else{
+		gl_FragColor.xyz = rgbB;
+	}
+	
+	gl_FragColor.a = 1.0;
+}

@@ -1,0 +1,17 @@
+/*
+ * basic shader for rendering 2D objects with one texture
+ */
+
+#version 330
+
+uniform mat3 pm;
+
+in vec2 vertex0;
+in vec2 texCoord0;
+
+out vec2 texCoord;
+
+void main(){
+	texCoord = texCoord0;
+	gl_Position = vec4(pm*vec3(vertex0, 1.0), 1.0);
+}

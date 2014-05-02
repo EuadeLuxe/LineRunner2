@@ -1,0 +1,13 @@
+/*
+ * basic shader for rendering a shadow map
+ */
+
+#version 330
+
+uniform mat4 pmv;
+
+in vec3 vertex0;
+
+void main(){
+	gl_Position = pmv*vec4(vertex0, 1.0);
+}
