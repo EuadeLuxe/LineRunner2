@@ -1,8 +1,9 @@
 #include "Intro.h"
 
-Intro::Intro(const unsigned int width, const unsigned int height){
+Intro::Intro(const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
 	wndSize[0] = width;
 	wndSize[1] = height;
+	this->camera = camera;
 }
 
 void Intro::setViewport(const unsigned int width, const unsigned int height){
@@ -11,7 +12,29 @@ void Intro::setViewport(const unsigned int width, const unsigned int height){
 }
 
 void Intro::load(){
+	//// res
+	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 
+	if(!textures[0]->loadTGA("res/textures/dk_games.tga")){
+		std::cerr<<"Could not load res/textures/dk_games.tga!"<<std::endl;
+	}
+
+	//// entities
+	auto halfScreen = bb::vec2(wndSize[0]/2, wndSize[1]/2);
+
+	auto sprite = std::shared_ptr<bb::Entity>(new bb::Entity());
+	sprite->addComponent("Texture", textures[0]);
+	sprite->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-textures[0]->width()/2, halfScreen.y-textures[0]->height()/2), textures[0]->getSize())));
+	sprite->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	//// systems
+	renderer2D = std::unique_ptr<Renderer2D>(new Renderer2D(std::unique_ptr<bb::Shader>(new bb::Shader("src/BurningByte/shader/basic2D.vertex", "src/BurningByte/shader/basic2D.fragment")), camera));
+	renderer2D->shader->bindAttrib("vertex0");
+	renderer2D->shader->bindAttrib("texCoord0");
+
+	renderer2D->addEntity(sprite);
+
+	hasStarted = true;
 }
 
 void Intro::pause(){
@@ -32,6 +55,6 @@ void Intro::render(const float deltaTime){
 	if(hasStarted){
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//renderer2D->update(deltaTime);
+		renderer2D->update(deltaTime);
 	}
 }

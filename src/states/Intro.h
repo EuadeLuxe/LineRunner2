@@ -1,15 +1,23 @@
 #ifndef INTRO_H_
 #define INTRO_H_
 
+#include <memory>
 #include <GL/gl3w.h>
 #include "../BurningByte/state/State.h"
+#include "../BurningByte/render/Camera.h"
+#include "../BurningByte/res/Texture.h"
+#include "../systems/Renderer2D.h"
 
 class Intro:public bb::State{
 	private:
 		unsigned int wndSize[2];
 
+		std::vector<std::shared_ptr<bb::Texture>> textures;
+		std::shared_ptr<bb::Camera> camera;
+		std::unique_ptr<Renderer2D> renderer2D;
+
 	public:
-		Intro(const unsigned int width, const unsigned int height);
+		Intro(const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height);
 
 		void setViewport(const unsigned int width, const unsigned int height);
 

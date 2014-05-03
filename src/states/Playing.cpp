@@ -1,39 +1,23 @@
 #include "Playing.h"
 
-Playing::Playing(const unsigned int width, const unsigned int height){
+Playing::Playing(const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
 	wndSize[0] = width;
 	wndSize[1] = height;
+	this->camera = camera;
 }
 
 void Playing::setViewport(const unsigned int width, const unsigned int height){
 	wndSize[0] = width;
 	wndSize[1] = height;
-
-	camera->setViewport(width, height);
 }
 
 void Playing::load(){
-	//// camera
-	camera = std::shared_ptr<bb::Camera>(new bb::Camera());
-	camera->zNear = -1.0f;
-	camera->zFar = 1.0f;
-	camera->setViewport(wndSize[0], wndSize[1]);
-
-	listener = std::unique_ptr<bb::Listener>(new bb::Listener(bb::vec3()));
-
 	//// res
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 
 	if(!textures[0]->loadTGA("res/textures/dk_games.tga")){
 		std::cerr<<"Could not load res/textures/dk_games.tga!"<<std::endl;
 	}
-
-	sounds.push_back(std::shared_ptr<bb::Sound>(new bb::Sound()));
-	sounds[0]->load("res/sounds/piano.wav");
-
-	// test
-	auto ss = std::shared_ptr<bb::SoundSource>(new bb::SoundSource(sounds[0], bb::vec3(), false));
-	ss->play();
 
 	//// entities
 	auto halfScreen = bb::vec2(wndSize[0]/2, wndSize[1]/2);

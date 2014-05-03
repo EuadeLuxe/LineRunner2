@@ -9,6 +9,9 @@
 
 #include "BurningByte/res/files/cfgFile.h"
 #include "BurningByte/state/StateManager.h"
+#include "BurningByte/res/buffer/Sound.h"
+#include "BurningByte/sound/Listener.h"
+#include "BurningByte/sound/SoundSource.h"
 #include "states/Intro.h"
 #include "states/MainMenu.h"
 #include "states/Controls.h"
@@ -23,6 +26,8 @@ float fps = 0.0f, fps_frame = 0.0f, fps_time = 0.0f, fps_timebase = 0.0f, deltaT
 
 // game
 std::unique_ptr<bb::StateManager> stateManager;
+std::shared_ptr<bb::Camera> camera;
+std::unique_ptr<bb::Listener> listener;
 
 float getFPS(){
 	fps_frame++;
@@ -40,6 +45,14 @@ float getFPS(){
 bool setup(){
 	std::cout<<"Loading..."<<std::endl;
 
+	// set up camera and listener
+	camera = std::shared_ptr<bb::Camera>(new bb::Camera());
+	camera->zNear = -1.0f;
+	camera->zFar = 1.0f;
+	camera->setViewport(wndSize[0], wndSize[1]);
+
+	listener = std::unique_ptr<bb::Listener>(new bb::Listener(bb::vec3()));
+
 	// we render 2D, everywhere...
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -48,12 +61,10 @@ bool setup(){
 	glDisable(GL_CULL_FACE);
 
 	stateManager = std::unique_ptr<bb::StateManager>(new bb::StateManager());
-	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(wndSize[0], wndSize[1])));
-	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(wndSize[0], wndSize[1])));
-	stateManager->add("controls", std::shared_ptr<bb::State>(new Controls(wndSize[0], wndSize[1])));
-	stateManager->add("playing", std::shared_ptr<bb::State>(new Playing(wndSize[0], wndSize[1])));
-
-	stateManager->switchTo("playing");
+	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(camera, wndSize[0], wndSize[1])));
+	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(camera, wndSize[0], wndSize[1])));
+	stateManager->add("controls", std::shared_ptr<bb::State>(new Controls(camera, wndSize[0], wndSize[1])));
+	stateManager->add("playing", std::shared_ptr<bb::State>(new Playing(camera, wndSize[0], wndSize[1])));
 
 	std::cout<<"Loading done!"<<std::endl;
 
@@ -80,8 +91,7 @@ void reshape(const int w, const int h){
 	wndSize[0] = w;
 	wndSize[1] = h;
 
-	std::shared_ptr<Playing> playing = std::static_pointer_cast<Playing>(stateManager->get("playing"));
-	playing->setViewport(w, h);
+	camera->setViewport(w, h);
 }
 
 int main(int argc, char** args){

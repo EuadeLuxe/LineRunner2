@@ -7,7 +7,7 @@ StateManager::StateManager(){
 	currentStateName = "";
 }
 
-void StateManager::add(const std::string name, const std::shared_ptr<State> state){
+void StateManager::add(const std::string &name, const std::shared_ptr<State> state){
 	states.insert(std::pair<std::string, std::shared_ptr<State>>(name, state));
 
 	if(!currentState){
@@ -17,8 +17,25 @@ void StateManager::add(const std::string name, const std::shared_ptr<State> stat
 	}
 }
 
-bool StateManager::switchTo(const std::string name){
-	std::map<std::string, std::shared_ptr<State>>::iterator i = states.find(name);
+void StateManager::remove(const std::string &name){
+	auto i = states.find(name);
+
+	if(i != states.end()){
+		states.erase(i);
+	}
+}
+
+void StateManager::remove(const std::shared_ptr<State> state){
+	for(auto i : states){
+		if(i.second == state){
+			states.erase(i.first);
+			return;
+		}
+	}
+}
+
+bool StateManager::switchTo(const std::string &name){
+	auto i = states.find(name);
 
 	if(i == states.end()){
 		return false;
@@ -42,8 +59,8 @@ bool StateManager::switchTo(const std::string name){
 	return true;
 }
 
-std::shared_ptr<State> StateManager::get(const std::string name){
-	std::map<std::string, std::shared_ptr<State>>::iterator i = states.find(name);
+std::shared_ptr<State> StateManager::get(const std::string &name){
+	auto i = states.find(name);
 
 	if(i != states.end()){
 		return i->second;

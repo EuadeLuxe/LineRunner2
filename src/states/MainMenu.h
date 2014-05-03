@@ -1,15 +1,18 @@
 #ifndef MAINMENU_H_
 #define MAINMENU_H_
 
+#include <memory>
 #include <GL/gl3w.h>
 #include "../BurningByte/state/State.h"
+#include "../BurningByte/render/Camera.h"
 
 class MainMenu:public bb::State{
 	private:
 		unsigned int wndSize[2];
+		std::shared_ptr<bb::Camera> camera;
 
 	public:
-		MainMenu(const unsigned int width, const unsigned int height);
+		MainMenu(const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height);
 
 		void setViewport(const unsigned int width, const unsigned int height);
 

@@ -1,8 +1,9 @@
 #include "MainMenu.h"
 
-MainMenu::MainMenu(const unsigned int width, const unsigned int height){
+MainMenu::MainMenu(const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
 	wndSize[0] = width;
 	wndSize[1] = height;
+	this->camera = camera;
 }
 
 void MainMenu::setViewport(const unsigned int width, const unsigned int height){
