@@ -28,7 +28,7 @@ void StateManager::remove(const std::string &name){
 void StateManager::remove(const std::shared_ptr<State> state){
 	for(auto i : states){
 		if(i.second == state){
-			states.erase(i.first);
+			remove(i.first);
 			return;
 		}
 	}

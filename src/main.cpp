@@ -12,6 +12,8 @@
 #include "BurningByte/res/buffer/Sound.h"
 #include "BurningByte/sound/Listener.h"
 #include "BurningByte/sound/SoundSource.h"
+#include "BurningByte/input/Input.h"
+#include "BurningByte/input/Mouse.h"
 #include "states/Intro.h"
 #include "states/MainMenu.h"
 #include "states/Controls.h"
@@ -26,6 +28,7 @@ float fps = 0.0f, fps_frame = 0.0f, fps_time = 0.0f, fps_timebase = 0.0f, deltaT
 
 // game
 std::shared_ptr<bb::StateManager> stateManager;
+std::shared_ptr<bb::Input> input;
 std::shared_ptr<bb::Camera> camera;
 std::unique_ptr<bb::Listener> listener;
 
@@ -45,6 +48,9 @@ float getFPS(){
 bool setup(){
 	std::cout<<"Loading..."<<std::endl;
 
+	// input system
+	input = std::shared_ptr<bb::Input>(new bb::Input());
+
 	// set up camera and listener
 	camera = std::shared_ptr<bb::Camera>(new bb::Camera());
 	camera->zNear = -1.0f;
@@ -61,7 +67,7 @@ bool setup(){
 	glDisable(GL_CULL_FACE);
 
 	stateManager = std::shared_ptr<bb::StateManager>(new bb::StateManager());
-	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(stateManager, camera, wndSize[0], wndSize[1])));
+	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(stateManager, input, camera, wndSize[0], wndSize[1])));
 	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(stateManager, camera, wndSize[0], wndSize[1])));
 	stateManager->add("controls", std::shared_ptr<bb::State>(new Controls(stateManager, camera, wndSize[0], wndSize[1])));
 	stateManager->add("playing", std::shared_ptr<bb::State>(new Playing(stateManager, camera, wndSize[0], wndSize[1])));
@@ -70,6 +76,10 @@ bool setup(){
 
 	return true;
 }
+
+/*
+ * main loop
+ * */
 
 void render(){
 	stateManager->current()->render(deltaTime);
@@ -87,11 +97,54 @@ void mainLoop(){
 	getFPS();
 }
 
+/*
+ * window
+ * */
+
 void reshape(const int w, const int h){
 	wndSize[0] = w;
 	wndSize[1] = h;
 
 	camera->setViewport(w, h);
+}
+
+/*
+ * input
+ * */
+
+void keyPressed(unsigned char key, int x, int y){
+	input->keyPressed(key);
+}
+
+void keyReleased(unsigned char key, int x, int y){
+	input->keyReleased(key);
+	input->keyTyped(key);
+}
+
+void mousePressed(int key, int state, int x, int y){
+	bb::Mouse::BUTTON button;
+
+	if(key == 0){
+		button = bb::Mouse::BUTTON::LEFT;
+	}
+	else if(key == 1){
+		button = bb::Mouse::BUTTON::MIDDLE;
+	}
+	else if(key == 2){
+		button = bb::Mouse::BUTTON::RIGHT;
+	}
+
+	if(!state){
+		input->mousePressed(x, y, button);
+	}
+	else{
+		input->mouseReleased(x, y, button);
+		input->mouseClicked(x, y, button);
+	}
+}
+
+void mouseMoved(int x, int y){
+	input->mouseMoved(x, y);
 }
 
 int main(int argc, char** args){
@@ -139,11 +192,11 @@ int main(int argc, char** args){
 	glutDisplayFunc(mainLoop);
 
 	// GLUT input
-	/*glutKeyboardFunc(keyPressed); // (unsigned char key, int x, int y)
+	glutKeyboardFunc(keyPressed); // (unsigned char key, int x, int y)
 	glutKeyboardUpFunc(keyReleased); // (unsigned char key, int x, int y)
 	glutMouseFunc(mousePressed); // (int key, int state, int x, int y)
 	glutPassiveMotionFunc(mouseMoved); // (int x, int y)
-	glutMotionFunc(mouseDragged); // (int x, int y)*/
+	glutMotionFunc(mouseMoved); // (int x, int y)
 
 	if(!setup()){
 		return 2;

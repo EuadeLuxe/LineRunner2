@@ -1,9 +1,10 @@
 #include "Intro.h"
 
-Intro::Intro(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
+Intro::Intro(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Input> input, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
 	wndSize[0] = width;
 	wndSize[1] = height;
 	this->states = states;
+	this->input = input;
 	this->camera = camera;
 }
 
@@ -13,6 +14,9 @@ void Intro::setViewport(const unsigned int width, const unsigned int height){
 }
 
 void Intro::load(){
+	skip = std::shared_ptr<Skip>(new Skip(states));
+	input->add(std::static_pointer_cast<bb::Keyboard>(skip));
+
 	//// res
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
@@ -62,7 +66,7 @@ void Intro::load(){
 }
 
 void Intro::pause(){
-
+	//input->remove(std::static_pointer_cast<bb::Keyboard>(skip)); CRASH!
 }
 
 void Intro::resume(){
@@ -74,6 +78,7 @@ void Intro::logic(const float deltaTime){
 		duration->update(deltaTime);
 
 		if(duration->screen == 3){
+			states->remove("intro");
 			states->switchTo("mainmenu");
 		}
 	}

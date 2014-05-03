@@ -19,23 +19,23 @@ void MainMenu::load(){
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 
 	textures[0]->loadTGA("res/textures/exit.tga");
-	textures[0]->loadTGA("res/textures/settings.tga");
-	textures[0]->loadTGA("res/textures/start.tga");
+	textures[1]->loadTGA("res/textures/settings.tga");
+	textures[2]->loadTGA("res/textures/start.tga");
 
 	//// entities
 	auto exit = std::shared_ptr<bb::Entity>(new bb::Entity());
 	exit->addComponent("Texture", textures[0]);
-	exit->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), textures[0]->getSize())));
+	exit->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-300+148, 40), textures[0]->getSize())));
 	exit->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	auto settings = std::shared_ptr<bb::Entity>(new bb::Entity());
 	settings->addComponent("Texture", textures[1]);
-	settings->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(64, 0), textures[1]->getSize())));
+	settings->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-300+74, 40), textures[1]->getSize())));
 	settings->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	auto start = std::shared_ptr<bb::Entity>(new bb::Entity());
 	start->addComponent("Texture", textures[2]);
-	start->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(128, 0), textures[2]->getSize())));
+	start->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-300, 40), textures[2]->getSize())));
 	start->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	//// systems
