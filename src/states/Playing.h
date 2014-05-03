@@ -6,21 +6,23 @@
 #include <iostream>
 #include <GL/gl3w.h>
 #include "../BurningByte/state/State.h"
+#include "../BurningByte/state/StateManager.h"
 #include "../BurningByte/res/Shader.h"
 #include "../BurningByte/render/Camera.h"
 #include "../BurningByte/res/Texture.h"
-#include "../systems/Renderer2D.h"
+#include "../systems/Renderer.h"
 
 class Playing:public bb::State{
 	private:
 		unsigned int wndSize[2];
+		std::shared_ptr<bb::StateManager> states;
+		std::shared_ptr<bb::Camera> camera;
 
 		std::vector<std::shared_ptr<bb::Texture>> textures;
-		std::shared_ptr<bb::Camera> camera;
-		std::unique_ptr<Renderer2D> renderer2D;
+		std::unique_ptr<Renderer> renderer;
 
 	public:
-		Playing(const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height);
+		Playing(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height);
 
 		void setViewport(const unsigned int wndWidth, const unsigned int wndHeight);
 

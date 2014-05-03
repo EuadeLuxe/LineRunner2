@@ -4,20 +4,25 @@
 #include <memory>
 #include <GL/gl3w.h>
 #include "../BurningByte/state/State.h"
+#include "../BurningByte/state/StateManager.h"
 #include "../BurningByte/render/Camera.h"
 #include "../BurningByte/res/Texture.h"
-#include "../systems/Renderer2D.h"
+#include "../components/Duration.h"
+#include "../systems/DurationManager.h"
+#include "../systems/Renderer.h"
 
 class Intro:public bb::State{
 	private:
 		unsigned int wndSize[2];
+		std::shared_ptr<bb::StateManager> states;
+		std::shared_ptr<bb::Camera> camera;
 
 		std::vector<std::shared_ptr<bb::Texture>> textures;
-		std::shared_ptr<bb::Camera> camera;
-		std::unique_ptr<Renderer2D> renderer2D;
+		std::unique_ptr<DurationManager> duration;
+		std::unique_ptr<Renderer> renderer;
 
 	public:
-		Intro(const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height);
+		Intro(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height);
 
 		void setViewport(const unsigned int width, const unsigned int height);
 

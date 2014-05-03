@@ -25,7 +25,7 @@ unsigned int wndSize[] = {1200, 800};
 float fps = 0.0f, fps_frame = 0.0f, fps_time = 0.0f, fps_timebase = 0.0f, deltaTime = 0.0f; // fps
 
 // game
-std::unique_ptr<bb::StateManager> stateManager;
+std::shared_ptr<bb::StateManager> stateManager;
 std::shared_ptr<bb::Camera> camera;
 std::unique_ptr<bb::Listener> listener;
 
@@ -60,11 +60,11 @@ bool setup(){
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 
-	stateManager = std::unique_ptr<bb::StateManager>(new bb::StateManager());
-	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(camera, wndSize[0], wndSize[1])));
-	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(camera, wndSize[0], wndSize[1])));
-	stateManager->add("controls", std::shared_ptr<bb::State>(new Controls(camera, wndSize[0], wndSize[1])));
-	stateManager->add("playing", std::shared_ptr<bb::State>(new Playing(camera, wndSize[0], wndSize[1])));
+	stateManager = std::shared_ptr<bb::StateManager>(new bb::StateManager());
+	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(stateManager, camera, wndSize[0], wndSize[1])));
+	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(stateManager, camera, wndSize[0], wndSize[1])));
+	stateManager->add("controls", std::shared_ptr<bb::State>(new Controls(stateManager, camera, wndSize[0], wndSize[1])));
+	stateManager->add("playing", std::shared_ptr<bb::State>(new Playing(stateManager, camera, wndSize[0], wndSize[1])));
 
 	std::cout<<"Loading done!"<<std::endl;
 

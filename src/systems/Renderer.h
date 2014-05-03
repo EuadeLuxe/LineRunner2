@@ -1,5 +1,5 @@
-#ifndef RENDERER2D_H_
-#define RENDERER2D_H_
+#ifndef RENDERER_H_
+#define RENDERER_H_
 
 #include <memory>
 #include "../BurningByte/System.h"
@@ -9,8 +9,9 @@
 #include "../BurningByte/res/Texture.h"
 #include "../BurningByte/render/util/Position2D.h"
 #include "../BurningByte/render/util/Object2D.h"
+#include "../components/Duration.h"
 
-class Renderer2D:public bb::System{
+class Renderer:public bb::System{
 	private:
 		std::shared_ptr<bb::Mesh> spriteMesh;
 
@@ -18,7 +19,7 @@ class Renderer2D:public bb::System{
 		std::shared_ptr<bb::Shader> shader;
 		std::shared_ptr<bb::Camera> camera;
 
-		Renderer2D(const std::shared_ptr<bb::Shader> shader, const std::shared_ptr<bb::Camera> camera);
+		Renderer(const std::shared_ptr<bb::Shader> shader, const std::shared_ptr<bb::Camera> camera);
 
 		void update(const float deltaTime);
 };
