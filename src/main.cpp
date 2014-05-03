@@ -13,7 +13,7 @@
 #include "BurningByte/sound/Listener.h"
 #include "BurningByte/sound/SoundSource.h"
 #include "BurningByte/input/Input.h"
-#include "BurningByte/input/Mouse.h"
+#include "BurningByte/input/Device.h"
 #include "states/Intro.h"
 #include "states/MainMenu.h"
 #include "states/Controls.h"
@@ -113,33 +113,33 @@ void reshape(const int w, const int h){
  * */
 
 void keyPressed(unsigned char key, int x, int y){
-	input->keyPressed(key);
+	input->keyPressed(key, x, y);
 }
 
 void keyReleased(unsigned char key, int x, int y){
-	input->keyReleased(key);
-	input->keyTyped(key);
+	input->keyReleased(key, x, y);
+	input->keyTyped(key, x, y);
 }
 
 void mousePressed(int key, int state, int x, int y){
-	bb::Mouse::BUTTON button;
+	bb::Device::BUTTON button;
 
 	if(key == 0){
-		button = bb::Mouse::BUTTON::LEFT;
+		button = bb::Device::BUTTON::LEFT;
 	}
 	else if(key == 1){
-		button = bb::Mouse::BUTTON::MIDDLE;
+		button = bb::Device::BUTTON::MIDDLE;
 	}
 	else if(key == 2){
-		button = bb::Mouse::BUTTON::RIGHT;
+		button = bb::Device::BUTTON::RIGHT;
 	}
 
 	if(!state){
-		input->mousePressed(x, y, button);
+		input->mousePressed(button, x, y);
 	}
 	else{
-		input->mouseReleased(x, y, button);
-		input->mouseClicked(x, y, button);
+		input->mouseReleased(button, x, y);
+		input->mouseClicked(button, x, y);
 	}
 }
 

@@ -2,73 +2,65 @@
 
 namespace bb{
 
-void Input::add(const std::shared_ptr<Mouse> device){
-	mouse.push_back(device);
+void Input::add(const std::shared_ptr<Device> device){
+	devices.push_back(device);
 }
 
-void Input::add(const std::shared_ptr<Keyboard> device){
-	keyboard.push_back(device);
-}
-
-void Input::remove(const std::shared_ptr<Mouse> device){
-	mouse.remove(device);
-}
-
-void Input::remove(const std::shared_ptr<Keyboard> device){
-	keyboard.remove(device);
+void Input::remove(const std::shared_ptr<Device> device){
+	devices.remove(device);
 }
 
 void Input::mouseMoved(const int x, const int y){
-	for(auto device : mouse){
-		device->moved(x, y, oldX, oldY);
+	for(auto device : devices){
+		device->mouseMoved(x, y, oldX, oldY);
 	}
 
 	oldX = x;
 	oldY = y;
 }
 
-void Input::mousePressed(const int x, const int y, const Mouse::BUTTON button){
-	for(auto device : mouse){
-		device->pressed(x, y, button);
+void Input::mousePressed(const Device::BUTTON button, const int x, const int y){
+	for(auto device : devices){
+		device->mousePressed(button, x, y);
 	}
 
 	oldX = x;
 	oldY = y;
 }
 
-void Input::mouseReleased(const int x, const int y, const Mouse::BUTTON button){
-	for(auto device : mouse){
-		device->released(x, y, button);
+void Input::mouseReleased(const Device::BUTTON button, const int x, const int y){
+	for(auto device : devices){
+		device->mouseReleased(button, x, y);
 	}
 
 	oldX = x;
 	oldY = y;
 }
 
-void Input::mouseClicked(const int x, const int y, const Mouse::BUTTON button){
-	for(auto device : mouse){
-		device->clicked(x, y, button);
+void Input::mouseClicked(const Device::BUTTON button, const int x, const int y){
+	for(auto device : devices){
+		device->mouseClicked(button, x, y);
 	}
 
 	oldX = x;
 	oldY = y;
 }
 
-void Input::keyPressed(const unsigned char key){
-	for(auto device : keyboard){
-		device->pressed(key);
+void Input::keyPressed(const unsigned char key, const int x, const int y){
+	for(auto device : devices){
+		device->keyPressed(key, x, y);
 	}
 }
 
-void Input::keyReleased(const unsigned char key){
-	for(auto device : keyboard){
-		device->released(key);
+void Input::keyReleased(const unsigned char key, const int x, const int y){
+	for(auto device : devices){
+		device->keyReleased(key, x, y);
 	}
 }
 
-void Input::keyTyped(const unsigned char key){
-	for(auto device : keyboard){
-		device->typed(key);
+void Input::keyTyped(const unsigned char key, const int x, const int y){
+	for(auto device : devices){
+		device->keyTyped(key, x, y);
 	}
 }
 

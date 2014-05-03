@@ -14,8 +14,7 @@ void Intro::setViewport(const unsigned int width, const unsigned int height){
 }
 
 void Intro::load(){
-	skip = std::shared_ptr<Skip>(new Skip(states));
-	input->add(std::static_pointer_cast<bb::Keyboard>(skip));
+	input->add(shared_from_this());
 
 	//// res
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
@@ -78,7 +77,7 @@ void Intro::logic(const float deltaTime){
 		duration->update(deltaTime);
 
 		if(duration->screen == 3){
-			states->remove("intro");
+			//states->remove("intro");
 			states->switchTo("mainmenu");
 		}
 	}
@@ -90,4 +89,9 @@ void Intro::render(const float deltaTime){
 
 		renderer->update(deltaTime);
 	}
+}
+
+void Intro::keyPressed(unsigned char c, int x, int y){
+	//states->remove("intro");
+	states->switchTo("mainmenu");
 }
