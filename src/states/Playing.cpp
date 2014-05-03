@@ -16,9 +16,7 @@ void Playing::load(){
 	//// res
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 
-	if(!textures[0]->loadTGA("res/textures/dk_games.tga")){
-		std::cerr<<"Could not load res/textures/dk_games.tga!"<<std::endl;
-	}
+	textures[0]->loadTGA("res/textures/dk_games.tga");
 
 	//// entities
 	auto halfScreen = bb::vec2(wndSize[0]/2, wndSize[1]/2);

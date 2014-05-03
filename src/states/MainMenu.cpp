@@ -13,7 +13,41 @@ void MainMenu::setViewport(const unsigned int width, const unsigned int height){
 }
 
 void MainMenu::load(){
+	//// res
+	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
+	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
+	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 
+	textures[0]->loadTGA("res/textures/exit.tga");
+	textures[0]->loadTGA("res/textures/settings.tga");
+	textures[0]->loadTGA("res/textures/start.tga");
+
+	//// entities
+	auto exit = std::shared_ptr<bb::Entity>(new bb::Entity());
+	exit->addComponent("Texture", textures[0]);
+	exit->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), textures[0]->getSize())));
+	exit->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	auto settings = std::shared_ptr<bb::Entity>(new bb::Entity());
+	settings->addComponent("Texture", textures[1]);
+	settings->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(64, 0), textures[1]->getSize())));
+	settings->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	auto start = std::shared_ptr<bb::Entity>(new bb::Entity());
+	start->addComponent("Texture", textures[2]);
+	start->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(128, 0), textures[2]->getSize())));
+	start->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	//// systems
+	renderer = std::unique_ptr<Renderer>(new Renderer(std::unique_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment")), camera));
+	renderer->shader->bindAttrib("vertex0");
+	renderer->shader->bindAttrib("texCoord0");
+
+	renderer->addEntity(exit);
+	renderer->addEntity(settings);
+	renderer->addEntity(start);
+
+	hasStarted = true;
 }
 
 void MainMenu::pause(){
@@ -34,6 +68,6 @@ void MainMenu::render(const float deltaTime){
 	if(hasStarted){
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//renderer2D->update(deltaTime);
+		renderer->update(deltaTime);
 	}
 }

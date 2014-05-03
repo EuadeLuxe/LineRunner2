@@ -18,17 +18,9 @@ void Intro::load(){
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
 
-	if(!textures[0]->loadTGA("res/textures/dk_games.tga")){
-		std::cerr<<"Could not load res/textures/dk_games.tga!"<<std::endl;
-	}
-
-	if(!textures[1]->loadTGA("res/textures/bb_logo.tga")){
-		std::cerr<<"Could not load res/textures/bb_logo.tga!"<<std::endl;
-	}
-
-	if(!textures[2]->loadTGA("res/textures/logo.tga")){
-		std::cerr<<"Could not load res/textures/logo.tga!"<<std::endl;
-	}
+	textures[0]->loadTGA("res/textures/dk_games.tga");
+	textures[1]->loadTGA("res/textures/bb_logo.tga");
+	textures[2]->loadTGA("res/textures/logo.tga");
 
 	//// entities
 	auto halfScreen = bb::vec2(wndSize[0]/2, wndSize[1]/2);
@@ -82,7 +74,7 @@ void Intro::logic(const float deltaTime){
 		duration->update(deltaTime);
 
 		if(duration->screen == 3){
-			states->switchTo("playing");
+			states->switchTo("mainmenu");
 		}
 	}
 }
