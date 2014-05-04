@@ -20,7 +20,11 @@ void LineRunner2::load(){
 	// input system
 	input = std::shared_ptr<bb::Input>(new bb::Input());
 
-	// set up camera and listener
+	// set up shader, camera and listener
+	shader = std::shared_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment"));
+	shader->bindAttrib("vertex0");
+	shader->bindAttrib("texCoord0");
+
 	camera = std::shared_ptr<bb::Camera>(new bb::Camera());
 	camera->zNear = -1.0f;
 	camera->zFar = 1.0f;
@@ -40,12 +44,13 @@ void LineRunner2::load(){
 	loadTexture("bb_logo", "res/textures/bb_logo.tga");
 	loadTexture("logo", "res/textures/logo.tga");
 
-	loadTexture("start", "res/textures/start.tga");
-	loadTexture("settings", "res/textures/settings.tga");
-	loadTexture("credits", "res/textures/credits.tga");
-	loadTexture("exit", "res/textures/exit.tga");
+	loadTexture("start", "res/textures/buttons/start.tga");
+	loadTexture("settings", "res/textures/buttons/settings.tga");
+	loadTexture("credits", "res/textures/buttons/credits.tga");
+	loadTexture("exit", "res/textures/buttons/exit.tga");
 	loadTexture("logo", "res/textures/logo.tga");
 	loadTexture("bg0", "res/textures/bg/bg0.tga");
+	loadTexture("bg1", "res/textures/bg/bg1.tga");
 
 	// add and load states
 	stateManager = std::shared_ptr<bb::StateManager>(new bb::StateManager());

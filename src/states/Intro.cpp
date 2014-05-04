@@ -40,9 +40,7 @@ void Intro::load(){
 	duration->addEntity(bb_logo);
 	duration->addEntity(logo);
 
-	renderer = std::unique_ptr<Renderer>(new Renderer(std::unique_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment")), game->camera));
-	renderer->shader->bindAttrib("vertex0");
-	renderer->shader->bindAttrib("texCoord0");
+	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
 
 	renderer->addEntity(dk_logo);
 	renderer->addEntity(bb_logo);

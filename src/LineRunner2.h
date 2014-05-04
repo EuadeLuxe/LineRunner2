@@ -7,6 +7,7 @@
 #include "BurningByte/res/files/cfgFile.h"
 #include "BurningByte/state/StateManager.h"
 #include "BurningByte/render/Camera.h"
+#include "BurningByte/res/Shader.h"
 #include "BurningByte/res/Texture.h"
 #include "BurningByte/res/buffer/Sound.h"
 #include "BurningByte/sound/Listener.h"
@@ -24,6 +25,7 @@ class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 		unsigned int wndSize[2];
 
 		std::shared_ptr<bb::StateManager> stateManager;
+		std::shared_ptr<bb::Shader> shader;
 		std::shared_ptr<bb::Camera> camera;
 		std::shared_ptr<bb::Input> input;
 

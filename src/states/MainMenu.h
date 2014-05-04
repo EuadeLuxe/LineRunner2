@@ -10,8 +10,8 @@
 #include "../LineRunner2.h"
 #include "../systems/Renderer.h"
 #include "../entities/Button.h"
-#include "../mainmenu/SwitchStateButton.h"
-#include "../mainmenu/ExitButton.h"
+#include "../buttons/SwitchStateButton.h"
+#include "../buttons/ExitButton.h"
 
 class MainMenu:public bb::State{
 	private:

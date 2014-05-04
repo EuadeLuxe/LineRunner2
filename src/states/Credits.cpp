@@ -5,7 +5,12 @@ Credits::Credits(const std::shared_ptr<LineRunner2> game){
 }
 
 void Credits::load(){
+	//// entities
 
+	//// systems
+	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
+
+	hasStarted = true;
 }
 
 void Credits::pause(){
@@ -26,6 +31,6 @@ void Credits::render(const float deltaTime){
 	if(hasStarted){
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//renderer2D->update(deltaTime);
+		renderer->update(deltaTime);
 	}
 }

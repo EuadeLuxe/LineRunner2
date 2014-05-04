@@ -3,10 +3,12 @@
 
 #include <memory>
 #include "../LineRunner2.h"
+#include "../systems/Renderer.h"
 
 class Credits:public bb::State{
 	private:
 		std::shared_ptr<LineRunner2> game;
+		std::unique_ptr<Renderer> renderer;
 
 	public:
 		Credits(const std::shared_ptr<LineRunner2> game);

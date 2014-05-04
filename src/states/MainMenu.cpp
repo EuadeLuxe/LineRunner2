@@ -58,7 +58,7 @@ void MainMenu::load(){
 	bg0->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), bb::vec2(game->wndSize[0], game->wndSize[1]))));
 	bg0->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
-	texture = game->textures["bg0"];
+	texture = game->textures["bg1"];
 
 	auto bg1 = std::shared_ptr<bb::Entity>(new bb::Entity("bg1"));
 	bg1->addComponent("Texture", texture);
@@ -66,9 +66,7 @@ void MainMenu::load(){
 	bg1->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	//// systems
-	renderer = std::unique_ptr<Renderer>(new Renderer(std::unique_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment")), game->camera));
-	renderer->shader->bindAttrib("vertex0");
-	renderer->shader->bindAttrib("texCoord0");
+	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
 
 	renderer->addEntity(bg0);
 	renderer->addEntity(bg1);
