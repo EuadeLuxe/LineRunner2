@@ -1,15 +1,7 @@
 #include "Controls.h"
 
-Controls::Controls(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
-	wndSize[0] = width;
-	wndSize[1] = height;
-	this->states = states;
-	this->camera = camera;
-}
-
-void Controls::setViewport(const unsigned int width, const unsigned int height){
-	wndSize[0] = width;
-	wndSize[1] = height;
+Controls::Controls(const std::shared_ptr<LineRunner2> game){
+	this->game = game;
 }
 
 void Controls::load(){

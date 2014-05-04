@@ -1,15 +1,15 @@
-#ifndef CONTROLS_H_
-#define CONTROLS_H_
+#ifndef CREDITS_H_
+#define CREDITS_H_
 
 #include <memory>
 #include "../LineRunner2.h"
 
-class Controls:public bb::State{
+class Credits:public bb::State{
 	private:
 		std::shared_ptr<LineRunner2> game;
 
 	public:
-		Controls(const std::shared_ptr<LineRunner2> game);
+		Credits(const std::shared_ptr<LineRunner2> game);
 
 		void load();
 

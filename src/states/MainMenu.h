@@ -6,35 +6,22 @@
 #include <vector>
 #include <GL/gl3w.h>
 #include "../BurningByte/state/State.h"
-#include "../BurningByte/state/StateManager.h"
-#include "../BurningByte/input/Input.h"
-#include "../BurningByte/render/Camera.h"
 #include "../BurningByte/res/Shader.h"
-#include "../BurningByte/res/Texture.h"
+#include "../LineRunner2.h"
 #include "../systems/Renderer.h"
 #include "../entities/Button.h"
-#include "../mainmenu/StartButton.h"
-#include "../mainmenu/SettingsButton.h"
+#include "../mainmenu/SwitchStateButton.h"
 #include "../mainmenu/ExitButton.h"
 
 class MainMenu:public bb::State{
 	private:
-		unsigned int wndSize[2];
-		std::shared_ptr<bb::StateManager> states;
-		std::shared_ptr<bb::Input> input;
-		std::shared_ptr<bb::Camera> camera;
-
-		std::vector<std::shared_ptr<bb::Texture>> textures;
+		std::shared_ptr<LineRunner2> game;
 		std::unique_ptr<Renderer> renderer;
-
-		std::shared_ptr<StartButton> startButton;
-		std::shared_ptr<SettingsButton> settingsButton;
+		std::shared_ptr<SwitchStateButton> startButton, settingsButton, creditsButton;
 		std::shared_ptr<ExitButton> exitButton;
 
 	public:
-		MainMenu(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Input> input, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height);
-
-		void setViewport(const unsigned int width, const unsigned int height);
+		MainMenu(const std::shared_ptr<LineRunner2> game);
 
 		void load();
 

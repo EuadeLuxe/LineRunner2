@@ -1,48 +1,35 @@
 #include "Intro.h"
 
-Intro::Intro(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Input> input, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
-	wndSize[0] = width;
-	wndSize[1] = height;
-	this->states = states;
-	this->input = input;
-	this->camera = camera;
-}
-
-void Intro::setViewport(const unsigned int width, const unsigned int height){
-	wndSize[0] = width;
-	wndSize[1] = height;
+Intro::Intro(const std::shared_ptr<LineRunner2> game){
+	this->game = game;
 }
 
 void Intro::load(){
-	input->add(shared_from_this());
-
-	//// res
-	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
-	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
-	textures.push_back(std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D)));
-
-	textures[0]->loadTGA("res/textures/dk_games.tga");
-	textures[1]->loadTGA("res/textures/bb_logo.tga");
-	textures[2]->loadTGA("res/textures/logo.tga");
+	game->input->add(shared_from_this());
 
 	//// entities
-	auto halfScreen = bb::vec2(wndSize[0]/2, wndSize[1]/2);
+	auto halfScreen = bb::vec2(game->wndSize[0]/2, game->wndSize[1]/2);
+	auto texture = game->textures["dk_games"];
 
 	auto dk_logo = std::shared_ptr<bb::Entity>(new bb::Entity());
-	dk_logo->addComponent("Texture", textures[0]);
-	dk_logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-textures[0]->width()/2, halfScreen.y-textures[0]->height()/2), textures[0]->getSize())));
+	dk_logo->addComponent("Texture", texture);
+	dk_logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-texture->width()/2, halfScreen.y-texture->height()/2), texture->getSize())));
 	dk_logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 	dk_logo->addComponent("Duration", std::shared_ptr<Duration>(new Duration(2, 2, 2, 2)));
 
+	texture = game->textures["bb_logo"];
+
 	auto bb_logo = std::shared_ptr<bb::Entity>(new bb::Entity());
-	bb_logo->addComponent("Texture", textures[1]);
-	bb_logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-textures[1]->width()/2, halfScreen.y-textures[1]->height()/2), textures[1]->getSize())));
+	bb_logo->addComponent("Texture", texture);
+	bb_logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-texture->width()/2, halfScreen.y-texture->height()/2), texture->getSize())));
 	bb_logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 	bb_logo->addComponent("Duration", std::shared_ptr<Duration>(new Duration(8, 2, 2, 2)));
 
+	texture = game->textures["logo"];
+
 	auto logo = std::shared_ptr<bb::Entity>(new bb::Entity());
-	logo->addComponent("Texture", textures[2]);
-	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-textures[2]->width()/2, halfScreen.y-textures[2]->height()/2), textures[2]->getSize())));
+	logo->addComponent("Texture", texture);
+	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-texture->width()/2, halfScreen.y-texture->height()/2), texture->getSize())));
 	logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 	logo->addComponent("Duration", std::shared_ptr<Duration>(new Duration(14, 2, 2, 2)));
 
@@ -53,7 +40,7 @@ void Intro::load(){
 	duration->addEntity(bb_logo);
 	duration->addEntity(logo);
 
-	renderer = std::unique_ptr<Renderer>(new Renderer(std::unique_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment")), camera));
+	renderer = std::unique_ptr<Renderer>(new Renderer(std::unique_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment")), game->camera));
 	renderer->shader->bindAttrib("vertex0");
 	renderer->shader->bindAttrib("texCoord0");
 
@@ -78,7 +65,7 @@ void Intro::logic(const float deltaTime){
 
 		if(duration->screen == 3){
 			//states->remove("intro");
-			states->switchTo("mainmenu");
+			game->stateManager->switchTo("mainmenu");
 		}
 	}
 }
@@ -93,5 +80,5 @@ void Intro::render(const float deltaTime){
 
 void Intro::keyPressed(unsigned char c, int x, int y){
 	//states->remove("intro");
-	states->switchTo("mainmenu");
+	game->stateManager->switchTo("mainmenu");
 }
