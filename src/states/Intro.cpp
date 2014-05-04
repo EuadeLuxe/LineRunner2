@@ -65,7 +65,7 @@ void Intro::load(){
 }
 
 void Intro::pause(){
-	//input->remove(std::static_pointer_cast<bb::Keyboard>(skip)); CRASH!
+	//input->remove(shared_from_this()); // CRASH!
 }
 
 void Intro::resume(){

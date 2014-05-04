@@ -68,7 +68,7 @@ bool setup(){
 
 	stateManager = std::shared_ptr<bb::StateManager>(new bb::StateManager());
 	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(stateManager, input, camera, wndSize[0], wndSize[1])));
-	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(stateManager, camera, wndSize[0], wndSize[1])));
+	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(stateManager, input, camera, wndSize[0], wndSize[1])));
 	stateManager->add("controls", std::shared_ptr<bb::State>(new Controls(stateManager, camera, wndSize[0], wndSize[1])));
 	stateManager->add("playing", std::shared_ptr<bb::State>(new Playing(stateManager, camera, wndSize[0], wndSize[1])));
 
@@ -113,16 +113,22 @@ void reshape(const int w, const int h){
  * */
 
 void keyPressed(unsigned char key, int x, int y){
+	y = wndSize[1]-y;
+
 	input->keyPressed(key, x, y);
 }
 
 void keyReleased(unsigned char key, int x, int y){
+	y = wndSize[1]-y;
+
 	input->keyReleased(key, x, y);
 	input->keyTyped(key, x, y);
 }
 
 void mousePressed(int key, int state, int x, int y){
 	bb::Device::BUTTON button;
+
+	y = wndSize[1]-y;
 
 	if(key == 0){
 		button = bb::Device::BUTTON::LEFT;
@@ -144,6 +150,8 @@ void mousePressed(int key, int state, int x, int y){
 }
 
 void mouseMoved(int x, int y){
+	y = wndSize[1]-y;
+
 	input->mouseMoved(x, y);
 }
 

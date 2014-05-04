@@ -1,9 +1,10 @@
 #include "MainMenu.h"
 
-MainMenu::MainMenu(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
+MainMenu::MainMenu(const std::shared_ptr<bb::StateManager> states, const std::shared_ptr<bb::Input> input, const std::shared_ptr<bb::Camera> camera, const unsigned int width, const unsigned int height){
 	wndSize[0] = width;
 	wndSize[1] = height;
 	this->states = states;
+	this->input = input;
 	this->camera = camera;
 }
 
@@ -25,20 +26,28 @@ void MainMenu::load(){
 	textures[3]->loadTGA("res/textures/logo.tga");
 
 	//// entities
-	auto exit = std::shared_ptr<bb::Entity>(new bb::Entity());
-	exit->addComponent("Texture", textures[0]);
-	exit->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-300+148, 40), textures[0]->getSize())));
-	exit->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	startButton = std::shared_ptr<StartButton>(new StartButton());
+	settingsButton = std::shared_ptr<SettingsButton>(new SettingsButton());
+	exitButton = std::shared_ptr<ExitButton>(new ExitButton());
 
-	auto settings = std::shared_ptr<bb::Entity>(new bb::Entity());
+	auto start = std::shared_ptr<Button>(new Button(startButton));
+	start->addComponent("Texture", textures[2]);
+	start->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-300, 40), textures[2]->getSize())));
+	start->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	auto settings = std::shared_ptr<Button>(new Button(settingsButton));
 	settings->addComponent("Texture", textures[1]);
 	settings->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-300+74, 40), textures[1]->getSize())));
 	settings->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
-	auto start = std::shared_ptr<bb::Entity>(new bb::Entity());
-	start->addComponent("Texture", textures[2]);
-	start->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-300, 40), textures[2]->getSize())));
-	start->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	auto exit = std::shared_ptr<Button>(new Button(exitButton));
+	exit->addComponent("Texture", textures[0]);
+	exit->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-300+148, 40), textures[0]->getSize())));
+	exit->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	input->add(start);
+	input->add(settings);
+	input->add(exit);
 
 	auto logo = std::shared_ptr<bb::Entity>(new bb::Entity());
 	logo->addComponent("Texture", textures[3]);
@@ -50,9 +59,9 @@ void MainMenu::load(){
 	renderer->shader->bindAttrib("vertex0");
 	renderer->shader->bindAttrib("texCoord0");
 
-	renderer->addEntity(exit);
-	renderer->addEntity(settings);
 	renderer->addEntity(start);
+	renderer->addEntity(settings);
+	renderer->addEntity(exit);
 	renderer->addEntity(logo);
 
 	hasStarted = true;
@@ -78,4 +87,8 @@ void MainMenu::render(const float deltaTime){
 
 		renderer->update(deltaTime);
 	}
+}
+
+void MainMenu::button(){
+	std::cout<<"ok"<<std::endl;
 }
