@@ -43,8 +43,6 @@ class MainMenu:public bb::State{
 
 		void logic(const float deltaTime);
 		void render(const float deltaTime);
-
-		void button();
 };
 
 #endif

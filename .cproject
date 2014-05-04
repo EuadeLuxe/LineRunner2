@@ -33,9 +33,9 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.47000149" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug"/>
 							<tool command="g++ -std=c++11" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1909095686" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
 								<option id="gnu.cpp.link.option.libs.966681144" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="glut"/>
 									<listOptionValue builtIn="false" value="dl"/>
 									<listOptionValue builtIn="false" value="GL"/>
-									<listOptionValue builtIn="false" value="glut"/>
 									<listOptionValue builtIn="false" value="pthread"/>
 									<listOptionValue builtIn="false" value="alut"/>
 									<listOptionValue builtIn="false" value="openal"/>

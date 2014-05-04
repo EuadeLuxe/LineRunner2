@@ -1,5 +1,5 @@
 #include <GL/gl3w.h>
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <AL/alut.h>
@@ -22,7 +22,7 @@
 // window
 std::string wndTitle = "LineRunner 2";
 unsigned int wndPosition[] = {50, 50};
-unsigned int wndSize[] = {1200, 800};
+unsigned int wndSize[] = {1920, 1080};
 
 float fps = 0.0f, fps_frame = 0.0f, fps_time = 0.0f, fps_timebase = 0.0f, deltaTime = 0.0f; // fps
 
@@ -91,9 +91,7 @@ void mainLoop(){
 	deltaTime = 1.0f/fps;
 
 	render();
-
 	stateManager->current()->logic(deltaTime);
-
 	getFPS();
 }
 
@@ -158,6 +156,7 @@ void mouseMoved(int x, int y){
 int main(int argc, char** args){
 	// read settings
 	bb::cfgFile config;
+	bool fullscreen = false;
 
 	if(config.read("res/settings.cfg")){
 		auto root = config.getRoot();
@@ -198,6 +197,10 @@ int main(int argc, char** args){
 	glutReshapeFunc(reshape);
 	glutIdleFunc(mainLoop);
 	glutDisplayFunc(mainLoop);
+
+	if(config.getRoot()->get("fullscreen")->toString() == "true"){
+		glutFullScreen();
+	}
 
 	// GLUT input
 	glutKeyboardFunc(keyPressed); // (unsigned char key, int x, int y)
