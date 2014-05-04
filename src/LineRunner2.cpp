@@ -52,6 +52,26 @@ void LineRunner2::load(){
 	loadTexture("bg0", "res/textures/bg/bg0.tga");
 	loadTexture("bg1", "res/textures/bg/bg1.tga");
 
+	// entities
+	auto texture = textures["bg0"];
+
+	auto bg0 = std::shared_ptr<bb::Entity>(new bb::Entity("bg0"));
+	bg0->addComponent("Texture", texture);
+	bg0->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), bb::vec2(wndSize[0], wndSize[1]))));
+	bg0->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	texture = textures["bg1"];
+
+	auto bg1 = std::shared_ptr<bb::Entity>(new bb::Entity("bg1"));
+	bg1->addComponent("Texture", texture);
+	bg1->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-5, 0), bb::vec2(wndSize[0], wndSize[1]))));
+	bg1->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	// systems
+	bgrenderer = std::unique_ptr<bgRenderer>(new bgRenderer(shader, camera));
+	bgrenderer->addEntity(bg0);
+	bgrenderer->addEntity(bg1);
+
 	// add and load states
 	stateManager = std::shared_ptr<bb::StateManager>(new bb::StateManager());
 	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(shared_from_this())));
