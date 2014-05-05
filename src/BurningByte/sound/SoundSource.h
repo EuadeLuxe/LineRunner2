@@ -1,7 +1,7 @@
 /*
  * SoundSource
  * Author: Marvin Blum
- * Last Update: 2014/05/02 15:47
+ * Last Update: 2014/05/05 19:53
  * */
 
 #ifndef SOUNDSOURCE_H_
@@ -24,7 +24,7 @@ class SoundSource:public Component{
 			int x, y, z;
 		};
 
-		SoundSource(const std::shared_ptr<Sound> &sound, const vec3 &position, const bool loop);
+		SoundSource(const std::shared_ptr<Sound> sound, const vec3 &position, const bool loop);
 		virtual ~SoundSource();
 
 		void play();
@@ -32,7 +32,7 @@ class SoundSource:public Component{
 		void rewind();
 		void stop();
 
-		void setSound(const std::shared_ptr<Sound> &sound);
+		void setSound(const std::shared_ptr<Sound> sound);
 		void setPosition(const vec3 &position);
 		void setVelocity(const vec3 &velocity);
 		void setDirection(const vec3 &direction);

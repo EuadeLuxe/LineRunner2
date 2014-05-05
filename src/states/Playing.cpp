@@ -6,6 +6,8 @@ Playing::Playing(const std::shared_ptr<LineRunner2> game){
 }
 
 void Playing::load(){
+	game->bgMusic->pause();
+
 	//// entities
 	auto texture = game->textures["paused"];
 	auto invObj = std::shared_ptr<bb::Object2D>(new bb::Object2D());
@@ -18,6 +20,7 @@ void Playing::load(){
 
 	// buttons
 	backButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "mainmenu"));
+	backButton->addSound(game->sounds["button_click"]);
 
 	texture = game->textures["back"];
 
@@ -42,11 +45,12 @@ void Playing::load(){
 }
 
 void Playing::pause(){
-
+	game->bgMusic->play();
 }
 
 void Playing::resume(){
 	game->input = input;
+	game->bgMusic->pause();
 	paused = false;
 
 	auto obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));

@@ -5,10 +5,18 @@ MainMenu::MainMenu(const std::shared_ptr<LineRunner2> game){
 }
 
 void MainMenu::load(){
+	game->bgMusic->play();
+
 	//// entities
 	startButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "playing"));
+	startButton->addSound(game->sounds["button_click"]);
+
 	settingsButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "settings"));
+	settingsButton->addSound(game->sounds["button_click"]);
+
 	creditsButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "credits"));
+	creditsButton->addSound(game->sounds["button_click"]);
+
 	exitButton = std::shared_ptr<ExitButton>(new ExitButton());
 
 	auto texture = game->textures["logo"];

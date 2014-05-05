@@ -23,6 +23,7 @@ class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 		std::unique_ptr<bb::Listener> listener;
 
 		void loadTexture(const std::string &name, const std::string &path);
+		void loadSound(const std::string &name, const std::string &path);
 
 	public:
 		unsigned int wndSize[2];
@@ -33,9 +34,11 @@ class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 		std::shared_ptr<bb::Camera> camera;
 
 		std::map<std::string, std::shared_ptr<bb::Texture>> textures;
+		std::map<std::string, std::shared_ptr<bb::Sound>> sounds;
 		std::shared_ptr<bb::Font> font;
 		std::unique_ptr<Renderer> bgrenderer;
 		std::unique_ptr<Background> background;
+		std::unique_ptr<bb::SoundSource> bgMusic;
 
 		LineRunner2(const unsigned int width, const unsigned int height);
 

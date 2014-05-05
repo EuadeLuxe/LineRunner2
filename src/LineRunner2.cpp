@@ -18,6 +18,12 @@ void LineRunner2::loadTexture(const std::string &name, const std::string &path){
 	}
 }
 
+void LineRunner2::loadSound(const std::string &name, const std::string &path){
+	auto sound = std::shared_ptr<bb::Sound>(new bb::Sound());
+	sound->load(path);
+	sounds.insert(std::make_pair(name, sound));
+}
+
 void LineRunner2::load(){
 	// set up shader, camera and listener
 	shader = std::shared_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment"));
@@ -59,6 +65,12 @@ void LineRunner2::load(){
 	loadTexture("cloud3", "res/textures/bg/cloud3.tga");
 
 	loadTexture("paused", "res/textures/paused.tga");
+
+	loadSound("button_click", "res/sounds/button_click.wav");
+	loadSound("menu_bg", "res/sounds/menu_bg.wav");
+
+	// background music
+	bgMusic = std::unique_ptr<bb::SoundSource>(new bb::SoundSource(sounds["menu_bg"], bb::vec3(), true));
 
 	// font
 	auto fontTex = std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D));

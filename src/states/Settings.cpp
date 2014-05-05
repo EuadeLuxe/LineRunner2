@@ -7,6 +7,7 @@ Settings::Settings(const std::shared_ptr<LineRunner2> game){
 void Settings::load(){
 	//// entities
 	backButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "mainmenu"));
+	backButton->addSound(game->sounds["button_click"]);
 
 	auto texture = game->textures["logo"];
 	auto obj = std::shared_ptr<bb::Object2D>(new bb::Object2D());

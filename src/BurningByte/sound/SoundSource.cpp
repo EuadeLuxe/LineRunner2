@@ -2,7 +2,7 @@
 
 namespace bb{
 
-SoundSource::SoundSource(const std::shared_ptr<Sound> &sound, const vec3 &position, const bool loop){
+SoundSource::SoundSource(const std::shared_ptr<Sound> sound, const vec3 &position, const bool loop){
 	this->sound = sound;
 
 	alGenSources(1, &id);
@@ -32,7 +32,7 @@ void SoundSource::stop(){
 	alSourceStop(id);
 }
 
-void SoundSource::setSound(const std::shared_ptr<Sound> &sound){
+void SoundSource::setSound(const std::shared_ptr<Sound> sound){
 	alSourcei(id, AL_BUFFER, sound->getID());
 }
 

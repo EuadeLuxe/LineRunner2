@@ -7,6 +7,7 @@ Credits::Credits(const std::shared_ptr<LineRunner2> game){
 void Credits::load(){
 	//// entities
 	backButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "mainmenu"));
+	backButton->addSound(game->sounds["button_click"]);
 
 	auto texture = game->textures["logo"];
 	auto obj = std::shared_ptr<bb::Object2D>(new bb::Object2D());
@@ -36,7 +37,7 @@ void Credits::load(){
 	content0->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
 	content0->addComponent("Font", game->font);
 
-	content0->setText("This game was created by Marvin Blum.\nGet the game and source code on GitHub:\n\nhttps://github.com/DeKugelschieber/LineRunner2");
+	content0->setText("This game was created by Marvin Blum.\nGet the game and source code on GitHub:\n\nhttps://github.com/DeKugelschieber/LineRunner2\n\nMain menu music: \"Revolve\" by cinematrik\nhttp://ccmixter.org/files/hisboyelroy/430");
 
 	//// systems
 	input = std::shared_ptr<bb::Input>(new bb::Input());
