@@ -35,7 +35,7 @@ void Credits::load(){
 	text->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
 	text->addComponent("Font", game->font);
 
-	text->setText("ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\nÄÖÜäöü\n0123456789\n!\"§%&/+*~#=?'`(){}[],.-;:_<>|\"	-> missing backslash");
+	text->setText("ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\nÄÖÜäöü\n0123456789\n!\"§%&/+*~#=?'`(){}[],.-;:_<>|\"'	-> missing backslash");
 
 	//// systems
 	input = std::shared_ptr<bb::Input>(new bb::Input());

@@ -49,8 +49,14 @@ void LineRunner2::load(){
 	loadTexture("exit", "res/textures/buttons/exit.tga");
 	loadTexture("back", "res/textures/buttons/back.tga");
 	loadTexture("logo", "res/textures/logo.tga");
+
+	loadTexture("bg", "res/textures/bg/bg.tga");
 	loadTexture("bg0", "res/textures/bg/bg0.tga");
 	loadTexture("bg1", "res/textures/bg/bg1.tga");
+	loadTexture("cloud0", "res/textures/bg/cloud0.tga");
+	loadTexture("cloud1", "res/textures/bg/cloud1.tga");
+	loadTexture("cloud2", "res/textures/bg/cloud2.tga");
+	loadTexture("cloud3", "res/textures/bg/cloud3.tga");
 
 	// font
 	auto fontTex = std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D));
@@ -76,28 +82,72 @@ void LineRunner2::load(){
 	}
 
 	// entities
-	auto texture = textures["bg0"];
+	auto texture = textures["bg"];
 
-	auto bg0 = std::shared_ptr<bb::Entity>(new bb::Entity("bg0"));
+	auto bg = std::shared_ptr<bb::Entity>(new bb::Entity());
+	bg->addComponent("Texture", texture);
+	bg->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), bb::vec2(wndSize[0], wndSize[1]))));
+	bg->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	texture = textures["bg0"];
+
+	auto bg0 = std::shared_ptr<bb::Entity>(new bb::Entity("bg"));
 	bg0->addComponent("Texture", texture);
 	bg0->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), bb::vec2(wndSize[0], wndSize[1]))));
 	bg0->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	texture = textures["bg1"];
 
-	auto bg1 = std::shared_ptr<bb::Entity>(new bb::Entity("bg1"));
+	auto bg1 = std::shared_ptr<bb::Entity>(new bb::Entity("bg"));
 	bg1->addComponent("Texture", texture);
 	bg1->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(wndSize[0]-5, 0), bb::vec2(wndSize[0], wndSize[1]))));
 	bg1->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
+	texture = textures["cloud0"];
+
+	auto cloud0 = std::shared_ptr<bb::Entity>(new bb::Entity("cloud"));
+	cloud0->addComponent("Texture", texture);
+	cloud0->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(100.0f, wndSize[1]-80-texture->height()), bb::vec2(texture->getSize()))));
+	cloud0->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	texture = textures["cloud1"];
+
+	auto cloud1 = std::shared_ptr<bb::Entity>(new bb::Entity("cloud"));
+	cloud1->addComponent("Texture", texture);
+	cloud1->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(800.0f, wndSize[1]-50-texture->height()), bb::vec2(texture->getSize()))));
+	cloud1->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	texture = textures["cloud2"];
+
+	auto cloud2 = std::shared_ptr<bb::Entity>(new bb::Entity("cloud"));
+	cloud2->addComponent("Texture", texture);
+	cloud2->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(1100.0f, wndSize[1]-60-texture->height()), bb::vec2(texture->getSize()))));
+	cloud2->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	texture = textures["cloud3"];
+
+	auto cloud3 = std::shared_ptr<bb::Entity>(new bb::Entity("cloud"));
+	cloud3->addComponent("Texture", texture);
+	cloud3->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(2400.0f, wndSize[1]-120-texture->height()), bb::vec2(texture->getSize()))));
+	cloud3->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
 	// systems
 	bgrenderer = std::unique_ptr<Renderer>(new Renderer(shader, camera));
+	bgrenderer->addEntity(bg);
+	bgrenderer->addEntity(cloud0);
+	bgrenderer->addEntity(cloud1);
+	bgrenderer->addEntity(cloud2);
+	bgrenderer->addEntity(cloud3);
 	bgrenderer->addEntity(bg0);
 	bgrenderer->addEntity(bg1);
 
-	background = std::unique_ptr<Background>(new Background(100.0f, wndSize[0]));
+	background = std::unique_ptr<Background>(new Background(100.0f, 20.0f, wndSize[0]));
 	background->addEntity(bg0);
 	background->addEntity(bg1);
+	background->addEntity(cloud0);
+	background->addEntity(cloud1);
+	background->addEntity(cloud2);
+	background->addEntity(cloud3);
 
 	// add and load states
 	stateManager = std::shared_ptr<bb::StateManager>(new bb::StateManager());

@@ -20,8 +20,8 @@ std::shared_ptr<Texture> FXAA::createScreen(const unsigned int width, const unsi
 	return screen;
 }
 
-FXAA::FXAA(const std::shared_ptr<Texture> screen){
-	shader = std::unique_ptr<bb::Shader>(new bb::Shader("src/BurningByte/shader/fxaa.vertex", "src/BurningByte/shader/fxaa.fragment"));
+FXAA::FXAA(const std::shared_ptr<Texture> screen, const std::shared_ptr<Shader> shader){
+	this->shader = shader;
 	shader->bindAttrib("vertex0");
 
 	mesh = Mesh::createSprite("index0", "vertex0", "");
@@ -31,7 +31,7 @@ FXAA::FXAA(const std::shared_ptr<Texture> screen){
 	quality = 0.0f;
 }
 
-FXAA::FXAA(const unsigned int width, const unsigned int height):FXAA(createScreen(width, height)){
+FXAA::FXAA(const unsigned int width, const unsigned int height, const std::shared_ptr<Shader> shader):FXAA(createScreen(width, height), shader){
 
 }
 

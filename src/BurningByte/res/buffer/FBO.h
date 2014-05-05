@@ -1,7 +1,7 @@
 /*
  * FBO - FrameBufferObject
  * Author: Marvin Blum
- * Last Update: 2014/03/21 16:18
+ * Last Update: 2014/05/05 14:54
  * */
 
 #ifndef FBO_H_
@@ -28,10 +28,10 @@ class FBO:public Buffer{
         void readBuffer(const unsigned int mode);
         void drawBuffers();
 
-        void texture(const unsigned int attachment, const unsigned int textureID, const int level);
-        void texture1D(const unsigned int attachment, const unsigned int textureID, const int level);
-        void texture2D(const unsigned int attachment, const unsigned int textureID, const int level);
-        void texture3D(const unsigned int attachment, const unsigned int textureID, const int level, const int layer);
+        void texture(const unsigned int attachment, const unsigned int textureID, const int level = 0);
+        void texture1D(const unsigned int attachment, const unsigned int textureID, const int level = 0);
+        void texture2D(const unsigned int attachment, const unsigned int textureID, const int level = 0);
+        void texture3D(const unsigned int attachment, const unsigned int textureID, const int level = 0, const int layer = 0);
         void attachRBO(const unsigned int attachment, const unsigned int rboTarget, const unsigned int rboID);
 
         unsigned int status();

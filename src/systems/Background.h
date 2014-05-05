@@ -7,10 +7,10 @@
 
 class Background:public bb::System{
 	private:
-		float speed, x; // translation speed and reset x coordinate
+		float speed, cloudSpeed, x; // translation speed and reset x coordinate
 
 	public:
-		Background(const float speed, const float x);
+		Background(const float speed, const float cloudSpeed, const float x);
 
 		void update(const float deltaTime);
 };
