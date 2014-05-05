@@ -9,6 +9,7 @@
 #include "BurningByte/render/Camera.h"
 #include "BurningByte/res/Shader.h"
 #include "BurningByte/res/Texture.h"
+#include "BurningByte/res/Font.h"
 #include "BurningByte/res/buffer/Sound.h"
 #include "BurningByte/sound/Listener.h"
 #include "BurningByte/sound/SoundSource.h"
@@ -32,6 +33,7 @@ class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 		std::shared_ptr<bb::Camera> camera;
 
 		std::map<std::string, std::shared_ptr<bb::Texture>> textures;
+		std::shared_ptr<bb::Font> font;
 		std::unique_ptr<Renderer> bgrenderer;
 		std::unique_ptr<Background> background;
 

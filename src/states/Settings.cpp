@@ -1,10 +1,10 @@
-#include "Credits.h"
+#include "Settings.h"
 
-Credits::Credits(const std::shared_ptr<LineRunner2> game){
+Settings::Settings(const std::shared_ptr<LineRunner2> game){
 	this->game = game;
 }
 
-void Credits::load(){
+void Settings::load(){
 	//// entities
 	backButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "mainmenu"));
 
@@ -27,15 +27,7 @@ void Credits::load(){
 	title->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 	title->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
 	title->addComponent("Font", game->font);
-	title->setText("Credits");
-
-	auto text = std::shared_ptr<bb::Text>(new bb::Text());
-	text->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(200.0f), bb::vec2(30.0f))));
-	text->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
-	text->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
-	text->addComponent("Font", game->font);
-
-	text->setText("ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\nƒ÷‹‰ˆ¸\n0123456789\n!\"ß%&/+*~#=?'`(){}[],.-;:_<>|\"	-> missing backslash");
+	title->setText("Settings");
 
 	//// systems
 	input = std::shared_ptr<bb::Input>(new bb::Input());
@@ -51,26 +43,25 @@ void Credits::load(){
 	textRenderer = std::unique_ptr<TextRenderer>(new TextRenderer(game->shader, game->camera, game->font->texture));
 
 	textRenderer->addEntity(title);
-	textRenderer->addEntity(text);
 
 	hasStarted = true;
 }
 
-void Credits::pause(){
+void Settings::pause(){
 
 }
 
-void Credits::resume(){
+void Settings::resume(){
 	game->input = input;
 }
 
-void Credits::logic(const float deltaTime){
-	if(hasStarted && deltaTime < 1.0f){
+void Settings::logic(const float deltaTime){
+	if(hasStarted && deltaTime < 0.1){
 		game->background->update(deltaTime);
 	}
 }
 
-void Credits::render(const float deltaTime){
+void Settings::render(const float deltaTime){
 	if(hasStarted){
 		game->bgrenderer->update(deltaTime);
 		renderer->update(deltaTime);

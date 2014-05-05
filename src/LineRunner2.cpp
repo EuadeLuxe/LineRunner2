@@ -1,7 +1,7 @@
 #include "LineRunner2.h"
 #include "states/Intro.h"
 #include "states/MainMenu.h"
-#include "states/Controls.h"
+#include "states/Settings.h"
 #include "states/Credits.h"
 #include "states/Playing.h"
 
@@ -52,6 +52,29 @@ void LineRunner2::load(){
 	loadTexture("bg0", "res/textures/bg/bg0.tga");
 	loadTexture("bg1", "res/textures/bg/bg1.tga");
 
+	// font
+	auto fontTex = std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D));
+	bb::cfgFile info;
+
+	if(fontTex->loadTGA("res/textures/font.tga", true) && info.read("res/font.cfg")){
+		font = std::shared_ptr<bb::Font>(new bb::Font(fontTex, 128));
+		font->padding = bb::vec2(5.0f);
+
+		std::list<std::shared_ptr<bb::cfgFile::Node>> chars;
+		info.getRoot()->getClasses("Character", chars);
+
+		for(auto c : chars){
+			if(c->get("char")->value.size() == 1 && c->get("pos")->value.size() == 2){
+				if(c->get("offset")->value.size() != 2){
+					font->addCharacter(c->get("char")->toString().at(0), c->get("pos")->toInt(0), c->get("pos")->toInt(1));
+				}
+				else{
+					font->addCharacter(c->get("char")->toString().at(0), c->get("pos")->toInt(0), c->get("pos")->toInt(1), bb::vec2(c->get("offset")->toFloat(0), c->get("offset")->toFloat(1)));
+				}
+			}
+		}
+	}
+
 	// entities
 	auto texture = textures["bg0"];
 
@@ -80,7 +103,7 @@ void LineRunner2::load(){
 	stateManager = std::shared_ptr<bb::StateManager>(new bb::StateManager());
 	stateManager->add("intro", std::shared_ptr<bb::State>(new Intro(shared_from_this())));
 	stateManager->add("mainmenu", std::shared_ptr<bb::State>(new MainMenu(shared_from_this())));
-	stateManager->add("controls", std::shared_ptr<bb::State>(new Controls(shared_from_this())));
+	stateManager->add("settings", std::shared_ptr<bb::State>(new Settings(shared_from_this())));
 	stateManager->add("credits", std::shared_ptr<bb::State>(new Credits(shared_from_this())));
 	stateManager->add("playing", std::shared_ptr<bb::State>(new Playing(shared_from_this())));
 }

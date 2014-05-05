@@ -21,7 +21,7 @@ void TextRenderer::update(const float deltaTime){
 		auto position = std::static_pointer_cast<bb::Position2D>(entity->getComponent("Position"));
 		auto object = std::static_pointer_cast<bb::Object2D>(entity->getComponent("Object2D"));
 
-		if(position && object && object->visible){
+		if(position && object && mesh && object->visible){
 			object->calculateModelMatrix(position);
 
 			shader->sendUniform3x3("pm", (camera->orthoMatrix3*object->modelMatrix).getArray());

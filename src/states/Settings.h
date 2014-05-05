@@ -1,5 +1,5 @@
-#ifndef CREDITS_H_
-#define CREDITS_H_
+#ifndef SETTINGS_H_
+#define SETTINGS_H_
 
 #include <memory>
 #include <string>
@@ -10,7 +10,7 @@
 #include "../entities/Button.h"
 #include "../buttons/SwitchStateButton.h"
 
-class Credits:public bb::State{
+class Settings:public bb::State{
 	private:
 		std::shared_ptr<LineRunner2> game;
 		std::shared_ptr<bb::Input> input;
@@ -19,7 +19,7 @@ class Credits:public bb::State{
 		std::shared_ptr<SwitchStateButton> backButton;
 
 	public:
-		Credits(const std::shared_ptr<LineRunner2> game);
+		Settings(const std::shared_ptr<LineRunner2> game);
 
 		void load();
 
