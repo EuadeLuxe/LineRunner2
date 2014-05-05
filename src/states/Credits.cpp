@@ -22,9 +22,12 @@ void Credits::load(){
 	back->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]-400+222, 60), texture->getSize())));
 	back->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
+	//// systems
+	input = std::shared_ptr<bb::Input>(new bb::Input());
+	game->input = input;
+
 	game->input->add(back);
 
-	//// systems
 	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
 
 	renderer->addEntity(logo);
@@ -34,11 +37,11 @@ void Credits::load(){
 }
 
 void Credits::pause(){
-	game->input->clear();
+
 }
 
 void Credits::resume(){
-	game->input->add(std::static_pointer_cast<Button>(renderer->getEntity("back")));
+	game->input = input;
 }
 
 void Credits::logic(const float deltaTime){

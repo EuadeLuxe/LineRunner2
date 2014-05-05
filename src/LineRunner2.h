@@ -27,9 +27,9 @@ class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 		unsigned int wndSize[2];
 
 		std::shared_ptr<bb::StateManager> stateManager;
+		std::shared_ptr<bb::Input> input;
 		std::shared_ptr<bb::Shader> shader;
 		std::shared_ptr<bb::Camera> camera;
-		std::shared_ptr<bb::Input> input;
 
 		std::map<std::string, std::shared_ptr<bb::Texture>> textures;
 		std::unique_ptr<Renderer> bgrenderer;

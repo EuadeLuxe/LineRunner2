@@ -5,8 +5,6 @@ Intro::Intro(const std::shared_ptr<LineRunner2> game){
 }
 
 void Intro::load(){
-	game->input->add(shared_from_this());
-
 	//// entities
 	auto halfScreen = bb::vec2(game->wndSize[0]/2, game->wndSize[1]/2);
 	auto texture = game->textures["dk_games"];
@@ -34,13 +32,19 @@ void Intro::load(){
 	logo->addComponent("Duration", std::shared_ptr<Duration>(new Duration(14, 2, 2, 2)));
 
 	//// systems
+	input = std::shared_ptr<bb::Input>(new bb::Input());
+	input->add(shared_from_this());
+	game->input = input;
+
 	duration = std::unique_ptr<DurationManager>(new DurationManager());
 
 	duration->addEntity(dk_logo);
 	duration->addEntity(bb_logo);
 	duration->addEntity(logo);
 
-	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
+	renderer = std::unique_ptr<Renderer>(new Renderer(std::unique_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment")), game->camera));
+	renderer->shader->bindAttrib("vertex0");
+	renderer->shader->bindAttrib("texCoord0");
 
 	renderer->addEntity(dk_logo);
 	renderer->addEntity(bb_logo);
@@ -50,7 +54,7 @@ void Intro::load(){
 }
 
 void Intro::pause(){
-	//input->remove(shared_from_this()); // CRASH!
+
 }
 
 void Intro::resume(){
@@ -58,21 +62,19 @@ void Intro::resume(){
 }
 
 void Intro::logic(const float deltaTime){
-	if(hasStarted && deltaTime < 1.0f){
+	if(hasStarted && deltaTime < 0.1){
 		duration->update(deltaTime);
 
 		if(duration->screen == 3){
 			//states->remove("intro");
 			game->stateManager->switchTo("mainmenu");
-
-			hasStarted = false;
 		}
 	}
 }
 
 void Intro::render(const float deltaTime){
 	if(hasStarted){
-		//renderer->update(deltaTime);
+		renderer->update(deltaTime);
 	}
 }
 
@@ -80,7 +82,5 @@ void Intro::keyPressed(unsigned char c, int x, int y){
 	if(hasStarted){
 		//states->remove("intro");
 		game->stateManager->switchTo("mainmenu");
-
-		hasStarted = false;
 	}
 }

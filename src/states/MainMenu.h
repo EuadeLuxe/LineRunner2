@@ -16,6 +16,7 @@
 class MainMenu:public bb::State{
 	private:
 		std::shared_ptr<LineRunner2> game;
+		std::shared_ptr<bb::Input> input;
 		std::unique_ptr<Renderer> renderer;
 		std::shared_ptr<SwitchStateButton> startButton, settingsButton, creditsButton;
 		std::shared_ptr<ExitButton> exitButton;

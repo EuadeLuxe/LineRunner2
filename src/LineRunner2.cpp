@@ -19,9 +19,6 @@ void LineRunner2::loadTexture(const std::string &name, const std::string &path){
 }
 
 void LineRunner2::load(){
-	// input system
-	input = std::shared_ptr<bb::Input>(new bb::Input());
-
 	// set up shader, camera and listener
 	shader = std::shared_ptr<bb::Shader>(new bb::Shader("res/shader/renderer.vertex", "res/shader/renderer.fragment"));
 	shader->bindAttrib("vertex0");

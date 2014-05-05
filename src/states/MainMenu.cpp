@@ -46,12 +46,15 @@ void MainMenu::load(){
 	exit->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]-400+222, 60), texture->getSize())));
 	exit->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
+	//// systems
+	input = std::shared_ptr<bb::Input>(new bb::Input());
+	game->input = input;
+
 	game->input->add(start);
 	game->input->add(settings);
 	game->input->add(credits);
-	//game->input->add(exit);
+	game->input->add(exit);
 
-	//// systems
 	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
 
 	renderer->addEntity(logo);
@@ -64,14 +67,11 @@ void MainMenu::load(){
 }
 
 void MainMenu::pause(){
-	game->input->clear();
+
 }
 
 void MainMenu::resume(){
-	game->input->add(std::static_pointer_cast<Button>(renderer->getEntity("start")));
-	game->input->add(std::static_pointer_cast<Button>(renderer->getEntity("settings")));
-	game->input->add(std::static_pointer_cast<Button>(renderer->getEntity("credits")));
-	//game->input->add(std::static_pointer_cast<Button>(renderer->getEntity("exit")));
+	game->input = input;
 }
 
 void MainMenu::logic(const float deltaTime){

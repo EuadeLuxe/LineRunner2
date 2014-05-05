@@ -13,6 +13,7 @@
 class Intro:public std::enable_shared_from_this<Intro>, public bb::State, public bb::Device{
 	private:
 		std::shared_ptr<LineRunner2> game;
+		std::shared_ptr<bb::Input> input;
 		std::unique_ptr<DurationManager> duration;
 		std::unique_ptr<Renderer> renderer;
 
