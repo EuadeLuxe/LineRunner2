@@ -58,6 +58,8 @@ void LineRunner2::load(){
 	loadTexture("cloud2", "res/textures/bg/cloud2.tga");
 	loadTexture("cloud3", "res/textures/bg/cloud3.tga");
 
+	loadTexture("paused", "res/textures/paused.tga");
+
 	// font
 	auto fontTex = std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D));
 	bb::cfgFile info;

@@ -9,33 +9,34 @@ void Credits::load(){
 	backButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "mainmenu"));
 
 	auto texture = game->textures["logo"];
+	auto obj = std::shared_ptr<bb::Object2D>(new bb::Object2D());
 
 	auto logo = std::shared_ptr<bb::Entity>(new bb::Entity());
 	logo->addComponent("Texture", texture);
 	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(60, game->wndSize[1]-texture->height()-60), texture->getSize())));
-	logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	logo->addComponent("Object2D", obj);
 
 	texture = game->textures["back"];
 
 	auto back = std::shared_ptr<Button>(new Button("back", backButton));
 	back->addComponent("Texture", texture);
 	back->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]-400+222, 60), texture->getSize())));
-	back->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	back->addComponent("Object2D", obj);
 
 	auto title = std::shared_ptr<bb::Text>(new bb::Text());
 	title->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(140, game->wndSize[1]-240), bb::vec2(60.0f))));
-	title->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	title->addComponent("Object2D", obj);
 	title->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
 	title->addComponent("Font", game->font);
 	title->setText("Credits");
 
-	auto text = std::shared_ptr<bb::Text>(new bb::Text());
-	text->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(200.0f), bb::vec2(30.0f))));
-	text->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
-	text->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
-	text->addComponent("Font", game->font);
+	auto content0 = std::shared_ptr<bb::Text>(new bb::Text());
+	content0->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(200, game->wndSize[1]/2+100), bb::vec2(40.0f))));
+	content0->addComponent("Object2D", obj);
+	content0->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
+	content0->addComponent("Font", game->font);
 
-	text->setText("ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\nƒ÷‹‰ˆ¸\n0123456789\n!\"ß%&/+*~#=?'`(){}[],.-;:_<>|\"'	-> missing backslash");
+	content0->setText("This game was created by Marvin Blum.\nGet the game and source code on GitHub:\n\nhttps://github.com/DeKugelschieber/LineRunner2");
 
 	//// systems
 	input = std::shared_ptr<bb::Input>(new bb::Input());
@@ -51,7 +52,7 @@ void Credits::load(){
 	textRenderer = std::unique_ptr<TextRenderer>(new TextRenderer(game->shader, game->camera, game->font->texture));
 
 	textRenderer->addEntity(title);
-	textRenderer->addEntity(text);
+	textRenderer->addEntity(content0);
 
 	hasStarted = true;
 }

@@ -2,11 +2,22 @@
 #define PLAYING_H_
 
 #include <memory>
+#include "../BurningByte/input/Input.h"
+#include "../BurningByte/input/Device.h"
 #include "../LineRunner2.h"
+#include "../systems/Renderer.h"
+#include "../entities/Button.h"
+#include "../buttons/SwitchStateButton.h"
 
-class Playing:public bb::State{
+class Playing:public std::enable_shared_from_this<Playing>, public bb::State, public bb::Device{
 	private:
 		std::shared_ptr<LineRunner2> game;
+		std::shared_ptr<bb::Input> input;
+		std::unique_ptr<Renderer> renderer;
+
+		bool paused;
+
+		std::shared_ptr<SwitchStateButton> backButton;
 
 	public:
 		Playing(const std::shared_ptr<LineRunner2> game);
@@ -18,6 +29,8 @@ class Playing:public bb::State{
 
 		void logic(const float deltaTime);
 		void render(const float deltaTime);
+
+		void keyTyped(unsigned char c, int x, int y);
 };
 
 #endif

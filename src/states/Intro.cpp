@@ -8,11 +8,12 @@ void Intro::load(){
 	//// entities
 	auto halfScreen = bb::vec2(game->wndSize[0]/2, game->wndSize[1]/2);
 	auto texture = game->textures["dk_games"];
+	auto obj = std::shared_ptr<bb::Object2D>(new bb::Object2D());
 
 	auto dk_logo = std::shared_ptr<bb::Entity>(new bb::Entity());
 	dk_logo->addComponent("Texture", texture);
 	dk_logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-texture->width()/2, halfScreen.y-texture->height()/2), texture->getSize())));
-	dk_logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	dk_logo->addComponent("Object2D", obj);
 	dk_logo->addComponent("Duration", std::shared_ptr<Duration>(new Duration(2, 2, 2, 2)));
 
 	texture = game->textures["bb_logo"];
@@ -20,7 +21,7 @@ void Intro::load(){
 	auto bb_logo = std::shared_ptr<bb::Entity>(new bb::Entity());
 	bb_logo->addComponent("Texture", texture);
 	bb_logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-texture->width()/2, halfScreen.y-texture->height()/2), texture->getSize())));
-	bb_logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	bb_logo->addComponent("Object2D", obj);
 	bb_logo->addComponent("Duration", std::shared_ptr<Duration>(new Duration(8, 2, 2, 2)));
 
 	texture = game->textures["logo"];
@@ -28,7 +29,7 @@ void Intro::load(){
 	auto logo = std::shared_ptr<bb::Entity>(new bb::Entity());
 	logo->addComponent("Texture", texture);
 	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(halfScreen.x-texture->width()/2, halfScreen.y-texture->height()/2), texture->getSize())));
-	logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	logo->addComponent("Object2D", obj);
 	logo->addComponent("Duration", std::shared_ptr<Duration>(new Duration(14, 2, 2, 2)));
 
 	//// systems
