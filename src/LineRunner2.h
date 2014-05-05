@@ -14,7 +14,8 @@
 #include "BurningByte/sound/SoundSource.h"
 #include "BurningByte/input/Input.h"
 #include "BurningByte/input/Device.h"
-#include "systems/bgRenderer.h"
+#include "systems/Renderer.h"
+#include "systems/Background.h"
 
 class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 	private:
@@ -31,7 +32,8 @@ class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 		std::shared_ptr<bb::Input> input;
 
 		std::map<std::string, std::shared_ptr<bb::Texture>> textures;
-		std::unique_ptr<bgRenderer> bgrenderer;
+		std::unique_ptr<Renderer> bgrenderer;
+		std::unique_ptr<Background> background;
 
 		LineRunner2(const unsigned int width, const unsigned int height);
 

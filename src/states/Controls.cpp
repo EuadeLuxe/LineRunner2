@@ -24,8 +24,6 @@ void Controls::logic(const float deltaTime){
 
 void Controls::render(const float deltaTime){
 	if(hasStarted){
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		//renderer->update(deltaTime);
 	}
 }

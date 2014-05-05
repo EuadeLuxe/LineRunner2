@@ -68,9 +68,13 @@ void LineRunner2::load(){
 	bg1->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	// systems
-	bgrenderer = std::unique_ptr<bgRenderer>(new bgRenderer(shader, camera));
+	bgrenderer = std::unique_ptr<Renderer>(new Renderer(shader, camera));
 	bgrenderer->addEntity(bg0);
 	bgrenderer->addEntity(bg1);
+
+	background = std::unique_ptr<Background>(new Background(100.0f, wndSize[0]));
+	background->addEntity(bg0);
+	background->addEntity(bg1);
 
 	// add and load states
 	stateManager = std::shared_ptr<bb::StateManager>(new bb::StateManager());
@@ -84,6 +88,8 @@ void LineRunner2::load(){
 void LineRunner2::setViewport(const unsigned int width, const unsigned int height){
 	wndSize[0] = width;
 	wndSize[1] = height;
+
+	glViewport(0, 0, width, height);
 }
 
 void LineRunner2::logic(const float deltaTime){
@@ -91,5 +97,7 @@ void LineRunner2::logic(const float deltaTime){
 }
 
 void LineRunner2::render(const float deltaTime){
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	stateManager->current()->render(deltaTime);
 }

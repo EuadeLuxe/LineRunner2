@@ -64,19 +64,23 @@ void Intro::logic(const float deltaTime){
 		if(duration->screen == 3){
 			//states->remove("intro");
 			game->stateManager->switchTo("mainmenu");
+
+			hasStarted = false;
 		}
 	}
 }
 
 void Intro::render(const float deltaTime){
 	if(hasStarted){
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		renderer->update(deltaTime);
+		//renderer->update(deltaTime);
 	}
 }
 
 void Intro::keyPressed(unsigned char c, int x, int y){
-	//states->remove("intro");
-	game->stateManager->switchTo("mainmenu");
+	if(hasStarted){
+		//states->remove("intro");
+		game->stateManager->switchTo("mainmenu");
+
+		hasStarted = false;
+	}
 }

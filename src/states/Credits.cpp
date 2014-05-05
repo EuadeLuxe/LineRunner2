@@ -29,8 +29,6 @@ void Credits::logic(const float deltaTime){
 
 void Credits::render(const float deltaTime){
 	if(hasStarted){
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		renderer->update(deltaTime);
 	}
 }

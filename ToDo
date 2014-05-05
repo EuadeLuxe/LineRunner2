@@ -2,6 +2,8 @@ Bugs:
 
 - removing intro state (order of commands)
 - removing input devices
+- OpenAL background noise
+- nothing rendered in main menu
 
 Features:
 

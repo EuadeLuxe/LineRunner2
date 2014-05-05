@@ -11,7 +11,14 @@ void MainMenu::load(){
 	creditsButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "credits"));
 	exitButton = std::shared_ptr<ExitButton>(new ExitButton());
 
-	auto texture = game->textures["start"];
+	auto texture = game->textures["logo"];
+
+	auto logo = std::shared_ptr<bb::Entity>(new bb::Entity());
+	logo->addComponent("Texture", texture);
+	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(60, game->wndSize[1]-texture->height()-60), texture->getSize())));
+	logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+
+	texture = game->textures["start"];
 
 	auto start = std::shared_ptr<Button>(new Button(startButton));
 	start->addComponent("Texture", texture);
@@ -44,21 +51,14 @@ void MainMenu::load(){
 	game->input->add(credits);
 	game->input->add(exit);
 
-	texture = game->textures["logo"];
-
-	auto logo = std::shared_ptr<bb::Entity>(new bb::Entity());
-	logo->addComponent("Texture", texture);
-	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(60, game->wndSize[1]-texture->height()-60), texture->getSize())));
-	logo->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
-
 	//// systems
 	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
 
+	renderer->addEntity(logo);
 	renderer->addEntity(start);
 	renderer->addEntity(settings);
 	renderer->addEntity(credits);
 	renderer->addEntity(exit);
-	renderer->addEntity(logo);
 
 	hasStarted = true;
 }
@@ -72,13 +72,14 @@ void MainMenu::resume(){
 }
 
 void MainMenu::logic(const float deltaTime){
-
+	if(hasStarted && deltaTime < 1.0f){
+		game->background->update(deltaTime);
+	}
 }
 
 void MainMenu::render(const float deltaTime){
 	if(hasStarted){
-		glClear(GL_COLOR_BUFFER_BIT);
-
+		game->bgrenderer->update(deltaTime);
 		renderer->update(deltaTime);
 	}
 }
