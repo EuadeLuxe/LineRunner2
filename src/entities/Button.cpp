@@ -1,5 +1,9 @@
 #include "Button.h"
 
+Button::Button(const std::string &name, const std::shared_ptr<Command> command):Entity(name){
+	this->command = command;
+}
+
 Button::Button(const std::shared_ptr<Command> command){
 	this->command = command;
 }

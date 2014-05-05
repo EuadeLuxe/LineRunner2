@@ -12,8 +12,10 @@ LineRunner2::LineRunner2(const unsigned int width, const unsigned int height){
 
 void LineRunner2::loadTexture(const std::string &name, const std::string &path){
 	auto texture = std::shared_ptr<bb::Texture>(new bb::Texture(GL_TEXTURE_2D));
-	texture->loadTGA(path);
-	textures.insert(std::make_pair(name, texture));
+
+	if(texture->loadTGA(path)){
+		textures.insert(std::make_pair(name, texture));
+	}
 }
 
 void LineRunner2::load(){
@@ -48,6 +50,7 @@ void LineRunner2::load(){
 	loadTexture("settings", "res/textures/buttons/settings.tga");
 	loadTexture("credits", "res/textures/buttons/credits.tga");
 	loadTexture("exit", "res/textures/buttons/exit.tga");
+	loadTexture("back", "res/textures/buttons/back.tga");
 	loadTexture("logo", "res/textures/logo.tga");
 	loadTexture("bg0", "res/textures/bg/bg0.tga");
 	loadTexture("bg1", "res/textures/bg/bg1.tga");

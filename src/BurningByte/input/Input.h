@@ -1,12 +1,12 @@
 /*
  * Input
  * Author: Marvin Blum
- * Last Update: 2014/05/03 18:37
+ * Last Update: 2014/05/05 11:33
  * */
 
 #ifndef INPUT_H_
 #define INPUT_H_
-							#include <iostream>
+
 #include <memory>
 #include <list>
 #include "Device.h"
@@ -22,6 +22,7 @@ class Input{
 	public:
 		void add(const std::shared_ptr<Device> device);
 		void remove(const std::shared_ptr<Device> device);
+		void clear();
 
 		void mouseMoved(const int x, const int y);
 		void mousePressed(const Device::BUTTON button, const int x, const int y);

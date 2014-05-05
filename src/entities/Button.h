@@ -12,6 +12,7 @@ class Button:public bb::Entity, public bb::Device{
 		std::shared_ptr<Command> command;
 
 	public:
+		Button(const std::string &name, const std::shared_ptr<Command> command);
 		Button(const std::shared_ptr<Command> command);
 
 		void mouseClicked(BUTTON button, int x, int y);

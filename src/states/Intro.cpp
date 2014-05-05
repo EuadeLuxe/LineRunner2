@@ -58,7 +58,7 @@ void Intro::resume(){
 }
 
 void Intro::logic(const float deltaTime){
-	if(hasStarted && deltaTime < 0.1){
+	if(hasStarted && deltaTime < 1.0f){
 		duration->update(deltaTime);
 
 		if(duration->screen == 3){

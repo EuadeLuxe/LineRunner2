@@ -41,6 +41,10 @@ bool StateManager::switchTo(const std::string &name){
 		return false;
 	}
 
+	if(name == currentStateName){
+		return false;
+	}
+
 	// switch
 	if(currentState){
 		currentState->pause();

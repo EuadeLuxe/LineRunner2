@@ -10,6 +10,12 @@ void Input::remove(const std::shared_ptr<Device> device){
 	devices.remove(device);
 }
 
+void Input::clear(){
+	for(std::list<std::shared_ptr<Device>>::iterator i = devices.begin(); i != devices.end(); i++){
+		i = devices.erase(i);
+	}
+}
+
 void Input::mouseMoved(const int x, const int y){
 	for(auto device : devices){
 		device->mouseMoved(x, y, oldX, oldY);
