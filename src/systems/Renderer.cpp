@@ -41,8 +41,8 @@ void Renderer::update(const float deltaTime){
 			}
 
 			if(animation && animation->current()){
-				shader->sendUniform("texScale", animation->current()->scale.x, animation->current()->scale.y);
-				shader->sendUniform("texOffset", animation->current()->offset.x, animation->current()->offset.y);
+				shader->sendUniform("texScale", animation->current()->current()->scale.x, animation->current()->current()->scale.y);
+				shader->sendUniform("texOffset", animation->current()->current()->offset.x, animation->current()->current()->offset.y);
 			}
 
 			glDrawElements(GL_TRIANGLES, spriteMesh->indexBuffer->size(), GL_UNSIGNED_INT, 0);

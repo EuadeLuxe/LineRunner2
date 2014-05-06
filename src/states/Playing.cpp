@@ -49,16 +49,27 @@ void Playing::load(){
 
 	auto frameTile = bb::vec2(1.0f/16.0f, 1.0f/8.0f);
 
-	auto animation = std::shared_ptr<Animation>(new Animation(8.0f, true));
-	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(0.0f, 7.0f))));
-	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(1.0f, 7.0f))));
-	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(2.0f, 7.0f))));
-	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(3.0f, 7.0f))));
-	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(4.0f, 7.0f))));
-	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(5.0f, 7.0f))));
-	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(6.0f, 7.0f))));
-	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(7.0f, 7.0f))));
-	animation->setCurrent(0);
+	auto idle = std::shared_ptr<Animation::Set>(new Animation::Set(true));
+	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(0.0f, 7.0f))));
+	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(1.0f, 7.0f))));
+	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(2.0f, 7.0f))));
+	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(3.0f, 7.0f))));
+	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(4.0f, 7.0f))));
+	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(5.0f, 7.0f))));
+
+	auto run = std::shared_ptr<Animation::Set>(new Animation::Set(true));
+	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(0.0f, 6.0f))));
+	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(1.0f, 6.0f))));
+	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(2.0f, 6.0f))));
+	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(3.0f, 6.0f))));
+	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(4.0f, 6.0f))));
+	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(5.0f, 6.0f))));
+
+	auto animation = std::shared_ptr<Animation>(new Animation(8.0f));
+	animation->add("idle", idle);
+	animation->add("run", run);
+
+	animation->set("run");
 
 	auto player = std::shared_ptr<bb::Entity>(new bb::Entity("player"));
 	player->addComponent("Texture", texture);
@@ -122,6 +133,9 @@ void Playing::render(const float deltaTime){
 void Playing::retry(){
 	paused = false;
 	music->play();
+
+	auto obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
+	obj->visible = false;
 }
 
 void Playing::keyTyped(unsigned char c, int x, int y){
