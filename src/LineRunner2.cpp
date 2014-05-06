@@ -54,7 +54,7 @@ void LineRunner2::load(){
 	loadTexture("credits", "res/textures/buttons/credits.tga");
 	loadTexture("exit", "res/textures/buttons/exit.tga");
 	loadTexture("back", "res/textures/buttons/back.tga");
-	loadTexture("logo", "res/textures/logo.tga");
+	loadTexture("retry", "res/textures/buttons/retry.tga");
 
 	loadTexture("bg", "res/textures/bg/bg.tga");
 	loadTexture("bg0", "res/textures/bg/bg0.tga");
@@ -68,6 +68,7 @@ void LineRunner2::load(){
 
 	loadSound("button_click", "res/sounds/button_click.wav");
 	loadSound("menu_bg", "res/sounds/menu_bg.wav");
+	loadSound("ingame", "res/sounds/ingame.wav");
 
 	// background music
 	bgMusic = std::unique_ptr<bb::SoundSource>(new bb::SoundSource(sounds["menu_bg"], bb::vec3(), true));

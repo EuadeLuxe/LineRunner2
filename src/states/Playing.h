@@ -8,6 +8,7 @@
 #include "../systems/Renderer.h"
 #include "../entities/Button.h"
 #include "../buttons/SwitchStateButton.h"
+#include "../buttons/RetryButton.h"
 
 class Playing:public std::enable_shared_from_this<Playing>, public bb::State, public bb::Device{
 	private:
@@ -17,7 +18,9 @@ class Playing:public std::enable_shared_from_this<Playing>, public bb::State, pu
 
 		bool paused;
 
+		std::shared_ptr<RetryButton> retryButton;
 		std::shared_ptr<SwitchStateButton> backButton;
+		std::unique_ptr<bb::SoundSource> music;
 
 	public:
 		Playing(const std::shared_ptr<LineRunner2> game);
@@ -30,6 +33,7 @@ class Playing:public std::enable_shared_from_this<Playing>, public bb::State, pu
 		void logic(const float deltaTime);
 		void render(const float deltaTime);
 
+		void retry();
 		void keyTyped(unsigned char c, int x, int y);
 };
 

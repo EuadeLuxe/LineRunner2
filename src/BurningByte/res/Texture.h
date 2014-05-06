@@ -1,7 +1,7 @@
 /*
  * Texture
  * Author: Marvin Blum
- * Last Update: 2014/05/03 01:01
+ * Last Update: 2014/05/06 13:05
  * */
 
 #ifndef TEXTURE_H_
@@ -26,7 +26,7 @@ class Texture:public Component{
 	public:
         std::vector<unsigned char> data;
 
-		Texture(unsigned int target);
+		Texture(unsigned int target = GL_TEXTURE_2D);
 		virtual ~Texture();
 
 		void drop();

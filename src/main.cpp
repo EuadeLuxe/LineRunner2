@@ -119,7 +119,7 @@ int main(int argc, char** args){
 	// read settings
 	bb::cfgFile config;
 
-	if(config.read("res/settings.cfg")){
+	if(config.read("settings.cfg")){
 		auto root = config.getRoot();
 
 		if(root->get("wndTitle")){

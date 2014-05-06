@@ -8,6 +8,10 @@ Playing::Playing(const std::shared_ptr<LineRunner2> game){
 void Playing::load(){
 	game->bgMusic->pause();
 
+	// music
+	music = std::unique_ptr<bb::SoundSource>(new bb::SoundSource(game->sounds["ingame"], bb::vec3(), true));
+	music->play();
+
 	//// entities
 	auto texture = game->textures["paused"];
 	auto invObj = std::shared_ptr<bb::Object2D>(new bb::Object2D());
@@ -19,8 +23,18 @@ void Playing::load(){
 	pauseIcon->addComponent("Object2D", invObj);
 
 	// buttons
+	retryButton = std::shared_ptr<RetryButton>(new RetryButton(shared_from_this()));
+	retryButton->addSound(game->sounds["button_click"]);
+
 	backButton = std::shared_ptr<SwitchStateButton>(new SwitchStateButton(game->stateManager, "mainmenu"));
 	backButton->addSound(game->sounds["button_click"]);
+
+	texture = game->textures["retry"];
+
+	auto retry = std::shared_ptr<Button>(new Button("retry", retryButton));
+	retry->addComponent("Texture", texture);
+	retry->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]-400+148, 60), texture->getSize())));
+	retry->addComponent("Object2D", invObj);
 
 	texture = game->textures["back"];
 
@@ -34,11 +48,13 @@ void Playing::load(){
 	game->input = input;
 
 	input->add(shared_from_this());
+	input->add(retry);
 	input->add(back);
 
 	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
 
 	renderer->addEntity(pauseIcon);
+	renderer->addEntity(retry);
 	renderer->addEntity(back);
 
 	hasStarted = true;
@@ -46,11 +62,13 @@ void Playing::load(){
 
 void Playing::pause(){
 	game->bgMusic->play();
+	music->pause();
 }
 
 void Playing::resume(){
 	game->input = input;
 	game->bgMusic->pause();
+	music->play();
 	paused = false;
 
 	auto obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
@@ -73,15 +91,22 @@ void Playing::render(const float deltaTime){
 	}
 }
 
+void Playing::retry(){
+	paused = false;
+	music->play();
+}
+
 void Playing::keyTyped(unsigned char c, int x, int y){
 	if(c == 27){ // ESC
 		auto obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
 
 		if(!paused){
 			paused = true;
+			music->pause();
 		}
 		else{
 			paused = false;
+			music->play();
 		}
 
 		obj->visible = paused;
