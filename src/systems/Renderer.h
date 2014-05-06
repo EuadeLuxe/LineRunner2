@@ -10,6 +10,7 @@
 #include "../BurningByte/render/util/Position2D.h"
 #include "../BurningByte/render/util/Object2D.h"
 #include "../components/Duration.h"
+#include "../components/Animation.h"
 
 class Renderer:public bb::System{
 	private:

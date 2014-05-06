@@ -65,6 +65,7 @@ void LineRunner2::load(){
 	loadTexture("cloud3", "res/textures/bg/cloud3.tga");
 
 	loadTexture("paused", "res/textures/paused.tga");
+	loadTexture("player", "res/textures/player.tga");
 
 	loadSound("button_click", "res/sounds/button_click.wav");
 	loadSound("menu_bg", "res/sounds/menu_bg.wav");

@@ -25,15 +25,24 @@ void Renderer::update(const float deltaTime){
 		auto position = std::static_pointer_cast<bb::Position2D>(entity->getComponent("Position"));
 		auto object = std::static_pointer_cast<bb::Object2D>(entity->getComponent("Object2D"));
 		auto duration = std::static_pointer_cast<Duration>(entity->getComponent("Duration"));
+		auto animation = std::static_pointer_cast<Animation>(entity->getComponent("Animation"));
 
 		if(texture && position && object && object->visible){
 			object->calculateModelMatrix(position);
 
 			texture->bind();
 			shader->sendUniform3x3("pm", (camera->orthoMatrix3*object->modelMatrix).getArray());
+			shader->sendUniform("alpha", 1.0f);
+			shader->sendUniform("texScale", 1.0f, 1.0f);
+			shader->sendUniform("texOffset", 0.0f, 0.0f);
 
 			if(duration){
 				shader->sendUniform("alpha", duration->alpha);
+			}
+
+			if(animation && animation->current()){
+				shader->sendUniform("texScale", animation->current()->scale.x, animation->current()->scale.y);
+				shader->sendUniform("texOffset", animation->current()->offset.x, animation->current()->offset.y);
 			}
 
 			glDrawElements(GL_TRIANGLES, spriteMesh->indexBuffer->size(), GL_UNSIGNED_INT, 0);

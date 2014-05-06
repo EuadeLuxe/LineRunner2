@@ -43,6 +43,29 @@ void Playing::load(){
 	back->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]-400+222, 60), texture->getSize())));
 	back->addComponent("Object2D", invObj);
 
+	// player
+	auto obj = std::shared_ptr<bb::Object2D>(new bb::Object2D());
+	texture = game->textures["player"];
+
+	auto frameTile = bb::vec2(1.0f/16.0f, 1.0f/8.0f);
+
+	auto animation = std::shared_ptr<Animation>(new Animation(8.0f, true));
+	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(0.0f, 7.0f))));
+	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(1.0f, 7.0f))));
+	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(2.0f, 7.0f))));
+	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(3.0f, 7.0f))));
+	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(4.0f, 7.0f))));
+	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(5.0f, 7.0f))));
+	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(6.0f, 7.0f))));
+	animation->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(7.0f, 7.0f))));
+	animation->setCurrent(0);
+
+	auto player = std::shared_ptr<bb::Entity>(new bb::Entity("player"));
+	player->addComponent("Texture", texture);
+	player->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), bb::vec2(texture->width()/16, texture->height()/8))));
+	player->addComponent("Object2D", obj);
+	player->addComponent("Animation", animation);
+
 	//// systems
 	input = std::shared_ptr<bb::Input>(new bb::Input());
 	game->input = input;
@@ -56,6 +79,7 @@ void Playing::load(){
 	renderer->addEntity(pauseIcon);
 	renderer->addEntity(retry);
 	renderer->addEntity(back);
+	renderer->addEntity(player);
 
 	hasStarted = true;
 }
@@ -81,6 +105,10 @@ void Playing::resume(){
 void Playing::logic(const float deltaTime){
 	if(hasStarted && deltaTime < 1.0f && !paused){
 		game->background->update(deltaTime);
+
+		// update player animation
+		auto animation = std::static_pointer_cast<Animation>(renderer->getEntity("player")->getComponent("Animation"));
+		animation->update(deltaTime);
 	}
 }
 

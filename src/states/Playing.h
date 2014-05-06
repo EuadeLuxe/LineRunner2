@@ -7,6 +7,7 @@
 #include "../LineRunner2.h"
 #include "../systems/Renderer.h"
 #include "../entities/Button.h"
+#include "../components/Animation.h"
 #include "../buttons/SwitchStateButton.h"
 #include "../buttons/RetryButton.h"
 
