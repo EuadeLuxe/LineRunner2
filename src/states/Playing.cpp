@@ -86,6 +86,19 @@ void Playing::load(){
 	input->add(back);
 
 	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
+	level = std::unique_ptr<Level>(new Level(game, 500.0f));
+
+	auto color = std::shared_ptr<Color>(new Color(bb::vec3(97.0f/256.0f, 131.0f/256.0f, 96.0f/256.0f)));
+
+	for(int i = 0; i < 10; i++){
+		auto box = std::shared_ptr<bb::Entity>(new bb::Entity());
+		box->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(-1.0f+i, 0.0f), bb::vec2(1.0f+i))));
+		box->addComponent("Object2D", obj);
+		box->addComponent("Color", color);
+
+		renderer->addEntity(box);
+		level->addEntity(box);
+	}
 
 	renderer->addEntity(pauseIcon);
 	renderer->addEntity(retry);
@@ -116,6 +129,7 @@ void Playing::resume(){
 void Playing::logic(const float deltaTime){
 	if(hasStarted && deltaTime < 1.0f && !paused){
 		game->background->update(deltaTime);
+		level->update(deltaTime);
 
 		// update player animation
 		auto animation = std::static_pointer_cast<Animation>(renderer->getEntity("player")->getComponent("Animation"));

@@ -11,6 +11,7 @@
 #include "../BurningByte/render/util/Object2D.h"
 #include "../components/Duration.h"
 #include "../components/Animation.h"
+#include "../components/Color.h"
 
 class Renderer:public bb::System{
 	private:

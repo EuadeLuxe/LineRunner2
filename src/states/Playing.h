@@ -6,8 +6,10 @@
 #include "../BurningByte/input/Device.h"
 #include "../LineRunner2.h"
 #include "../systems/Renderer.h"
+#include "../systems/Level.h"
 #include "../entities/Button.h"
 #include "../components/Animation.h"
+#include "../components/Color.h"
 #include "../buttons/SwitchStateButton.h"
 #include "../buttons/RetryButton.h"
 
@@ -16,6 +18,7 @@ class Playing:public std::enable_shared_from_this<Playing>, public bb::State, pu
 		std::shared_ptr<LineRunner2> game;
 		std::shared_ptr<bb::Input> input;
 		std::unique_ptr<Renderer> renderer;
+		std::unique_ptr<Level> level;
 
 		bool paused;
 

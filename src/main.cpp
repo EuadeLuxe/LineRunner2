@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <stdlib.h>
+#include <time.h>
 
 #include "LineRunner2.h"
 
@@ -33,6 +35,8 @@ float getFPS(){
 }
 
 bool setup(){
+	srand(time(0));
+
 	game = std::shared_ptr<LineRunner2>(new LineRunner2(wndSize[0], wndSize[1]));
 	game->load();
 

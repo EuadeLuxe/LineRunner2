@@ -26,15 +26,20 @@ void Renderer::update(const float deltaTime){
 		auto object = std::static_pointer_cast<bb::Object2D>(entity->getComponent("Object2D"));
 		auto duration = std::static_pointer_cast<Duration>(entity->getComponent("Duration"));
 		auto animation = std::static_pointer_cast<Animation>(entity->getComponent("Animation"));
+		auto color = std::static_pointer_cast<Color>(entity->getComponent("Color"));
 
-		if(texture && position && object && object->visible){
+		if(position && object && object->visible){
 			object->calculateModelMatrix(position);
 
-			texture->bind();
+			if(texture){
+				texture->bind();
+			}
+
 			shader->sendUniform3x3("pm", (camera->orthoMatrix3*object->modelMatrix).getArray());
 			shader->sendUniform("alpha", 1.0f);
 			shader->sendUniform("texScale", 1.0f, 1.0f);
 			shader->sendUniform("texOffset", 0.0f, 0.0f);
+			shader->sendUniform("color", 0.0f, 0.0f, 0.0f);
 
 			if(duration){
 				shader->sendUniform("alpha", duration->alpha);
@@ -45,9 +50,15 @@ void Renderer::update(const float deltaTime){
 				shader->sendUniform("texOffset", animation->current()->current()->offset.x, animation->current()->current()->offset.y);
 			}
 
+			if(color){
+				shader->sendUniform("color", color->color.x, color->color.y, color->color.z);
+			}
+
 			glDrawElements(GL_TRIANGLES, spriteMesh->indexBuffer->size(), GL_UNSIGNED_INT, 0);
 
-			texture->unbind();
+			if(texture){
+				texture->unbind();
+			}
 		}
 	}
 
