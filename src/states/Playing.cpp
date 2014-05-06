@@ -3,6 +3,7 @@
 Playing::Playing(const std::shared_ptr<LineRunner2> game){
 	this->game = game;
 	paused = false;
+	countdown = 3.0f;
 }
 
 void Playing::load(){
@@ -43,6 +44,14 @@ void Playing::load(){
 	back->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]-400+222, 60), texture->getSize())));
 	back->addComponent("Object2D", invObj);
 
+	// countdown
+	auto countdownText = std::shared_ptr<bb::Text>(new bb::Text("countdown"));
+	countdownText->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]/2, game->wndSize[1]/2), bb::vec2(120.0f))));
+	countdownText->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
+	countdownText->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
+	countdownText->addComponent("Font", game->font);
+	countdownText->setText("3");
+
 	// player
 	auto obj = std::shared_ptr<bb::Object2D>(new bb::Object2D());
 	texture = game->textures["player"];
@@ -73,7 +82,7 @@ void Playing::load(){
 
 	animation->set("run");
 
-	auto player = std::shared_ptr<bb::Entity>(new bb::Entity("player"));
+	auto player = std::shared_ptr<Player>(new Player("player"));
 	player->addComponent("Texture", texture);
 	player->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]/4, game->wndSize[1]/3), bb::vec2(texture->width()/16, texture->height()/8))));
 	player->addComponent("Object2D", obj);
@@ -84,11 +93,10 @@ void Playing::load(){
 	game->input = input;
 
 	input->add(shared_from_this());
-	input->add(retry);
-	input->add(back);
+	input->add(player);
 
 	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
-	level = std::unique_ptr<Level>(new Level(game, std::static_pointer_cast<bb::Position2D>(player->getComponent("Position")), 500.0f));
+	level = std::unique_ptr<Level>(new Level(game, player, 500.0f));
 
 	// fill in 20 blocks (or "buildings")
 	auto color = std::shared_ptr<Color>(new Color(bb::vec3(97.0f/256.0f, 131.0f/256.0f, 96.0f/256.0f)));
@@ -103,10 +111,16 @@ void Playing::load(){
 		level->addEntity(box);
 	}
 
+	level->reset();
+
 	renderer->addEntity(pauseIcon);
 	renderer->addEntity(retry);
 	renderer->addEntity(back);
 	renderer->addEntity(player);
+
+	textRenderer = std::unique_ptr<TextRenderer>(new TextRenderer(game->shader, game->camera, game->font->texture));
+
+	textRenderer->addEntity(countdownText);
 
 	hasStarted = true;
 }
@@ -125,18 +139,51 @@ void Playing::resume(){
 	auto obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
 	obj->visible = false;
 
-	// reset game
-	// ...
+	// reset?
 }
 
 void Playing::logic(const float deltaTime){
 	if(hasStarted && deltaTime < 1.0f && !paused){
 		game->background->update(deltaTime);
-		level->update(deltaTime);
 
 		// update player animation
 		auto animation = std::static_pointer_cast<Animation>(renderer->getEntity("player")->getComponent("Animation"));
 		animation->update(deltaTime);
+
+		if(countdown < 0.0f){
+			// update level
+			level->update(deltaTime);
+
+			// jump/fall
+			auto player = std::static_pointer_cast<Player>(renderer->getEntity("player"));
+			auto position = std::static_pointer_cast<bb::Position2D>(player->getComponent("Position"));
+
+			if(player->jump && !player->jumping){
+				position->direction.y = 400.0f;
+				player->jumping = true;
+			}
+
+			position->position.y += position->direction.y*deltaTime;
+
+			if(position->direction.y > -400.0f){
+				position->direction -= deltaTime*800.0f;
+			}
+		}
+		else{
+			auto countdownText = std::static_pointer_cast<bb::Text>(textRenderer->getEntity("countdown"));
+			countdown -= deltaTime;
+
+			if(countdown < 0.0f){
+				auto obj = std::static_pointer_cast<bb::Object2D>(countdownText->getComponent("Object2D"));
+				obj->visible = false;
+			}
+			else if(countdown < 1.0f){
+				countdownText->setText("1");
+			}
+			else if(countdown < 2.0f){
+				countdownText->setText("2");
+			}
+		}
 	}
 }
 
@@ -144,28 +191,45 @@ void Playing::render(const float deltaTime){
 	if(hasStarted){
 		game->bgrenderer->update(deltaTime);
 		renderer->update(deltaTime);
+		textRenderer->update(deltaTime);
 	}
 }
 
 void Playing::retry(){
 	paused = false;
+	countdown = 3.0f;
 	music->play();
 
-	auto obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
+	auto countdownText = std::static_pointer_cast<bb::Text>(textRenderer->getEntity("countdown"));
+	countdownText->setText("3");
+
+	auto obj = std::static_pointer_cast<bb::Object2D>(countdownText->getComponent("Object2D"));
+	obj->visible = true;
+
+	obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
 	obj->visible = false;
+
+	auto position = std::static_pointer_cast<bb::Position2D>(renderer->getEntity("player")->getComponent("Position"));
+	position->position.y = game->wndSize[1]/3;
+
+	level->reset();
 }
 
-void Playing::keyTyped(unsigned char c, int x, int y){
-	if(c == 27){ // ESC
+void Playing::keyTyped(unsigned char key, int x, int y){
+	if(key == 27){ // ESC
 		auto obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
 
 		if(!paused){
 			paused = true;
 			music->pause();
+			input->add(std::static_pointer_cast<Button>(renderer->getEntity("retry")));
+			input->add(std::static_pointer_cast<Button>(renderer->getEntity("back")));
 		}
 		else{
 			paused = false;
 			music->play();
+			input->remove(std::static_pointer_cast<Button>(renderer->getEntity("retry")));
+			input->remove(std::static_pointer_cast<Button>(renderer->getEntity("back")));
 		}
 
 		obj->visible = paused;

@@ -25,6 +25,10 @@ void TextRenderer::update(const float deltaTime){
 			object->calculateModelMatrix(position);
 
 			shader->sendUniform3x3("pm", (camera->orthoMatrix3*object->modelMatrix).getArray());
+			shader->sendUniform("alpha", 1.0f);
+			shader->sendUniform("texScale", 1.0f, 1.0f);
+			shader->sendUniform("texOffset", 0.0f, 0.0f);
+			shader->sendUniform("color", 0.0f, 0.0f, 0.0f);
 
 			mesh->indexBuffer->bind();
 			mesh->vertex2Buffer->bind();
