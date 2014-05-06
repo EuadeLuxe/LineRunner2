@@ -10,10 +10,11 @@
 class Level:public bb::System{
 	private:
 		std::shared_ptr<LineRunner2> game;
+		std::shared_ptr<bb::Position2D> last, player; // reference to last position object, player position
 		float speed;
 
 	public:
-		Level(const std::shared_ptr<LineRunner2> game, const float speed);
+		Level(const std::shared_ptr<LineRunner2> game, const std::shared_ptr<bb::Position2D> player, const float speed);
 
 		void update(const float deltaTime);
 };

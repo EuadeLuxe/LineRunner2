@@ -64,6 +64,8 @@ void Playing::load(){
 	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(3.0f, 6.0f))));
 	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(4.0f, 6.0f))));
 	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(5.0f, 6.0f))));
+	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(6.0f, 6.0f))));
+	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(7.0f, 6.0f))));
 
 	auto animation = std::shared_ptr<Animation>(new Animation(8.0f));
 	animation->add("idle", idle);
@@ -73,7 +75,7 @@ void Playing::load(){
 
 	auto player = std::shared_ptr<bb::Entity>(new bb::Entity("player"));
 	player->addComponent("Texture", texture);
-	player->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), bb::vec2(texture->width()/16, texture->height()/8))));
+	player->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]/4, game->wndSize[1]/3), bb::vec2(texture->width()/16, texture->height()/8))));
 	player->addComponent("Object2D", obj);
 	player->addComponent("Animation", animation);
 
@@ -86,13 +88,14 @@ void Playing::load(){
 	input->add(back);
 
 	renderer = std::unique_ptr<Renderer>(new Renderer(game->shader, game->camera));
-	level = std::unique_ptr<Level>(new Level(game, 500.0f));
+	level = std::unique_ptr<Level>(new Level(game, std::static_pointer_cast<bb::Position2D>(player->getComponent("Position")), 500.0f));
 
+	// fill in 20 blocks (or "buildings")
 	auto color = std::shared_ptr<Color>(new Color(bb::vec3(97.0f/256.0f, 131.0f/256.0f, 96.0f/256.0f)));
 
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < 20; i++){
 		auto box = std::shared_ptr<bb::Entity>(new bb::Entity());
-		box->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(-1.0f+i, 0.0f), bb::vec2(1.0f+i))));
+		box->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(i*10, 0.0f), bb::vec2(10.0f))));
 		box->addComponent("Object2D", obj);
 		box->addComponent("Color", color);
 
