@@ -23,6 +23,7 @@ void Level::reset(){
 			position->size.x = 600+rand()%1000;
 
 			if(first){
+				position->size.x += 1000.0f;
 				position->size.y = game->wndSize[1]/3-10;
 				first = false;
 			}
@@ -68,7 +69,14 @@ void Level::update(const float deltaTime){
 				if(pPos->position.y < position->size.y && pPos->position.y > position->size.y-10.0f){
 					pPos->direction.y = 0.0f;
 					pPos->position.y = position->size.y;
-					player->jumping = false;
+
+					if(player->jumping){
+						std::static_pointer_cast<Animation>(player->getComponent("Animation"))->set("run");
+						player->jumping = false;
+					}
+				}
+				else if(pPos->position.y < position->size.y-10.0f){
+					// collision!
 				}
 			}
 		}

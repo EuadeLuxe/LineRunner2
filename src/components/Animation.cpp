@@ -17,6 +17,7 @@ void Animation::add(const std::string &name, const std::shared_ptr<Set> set){
 void Animation::set(const std::string &name){
 	if(sets.find(name) != sets.end()){
 		currentSet = sets[name];
+		currentSet->reset();
 		interpolation = 0.0f;
 	}
 }
@@ -58,6 +59,10 @@ void Animation::Set::set(const unsigned int i){
 	}
 }
 
+void Animation::Set::reset(){
+	currentFrame = 0;
+}
+
 void Animation::Set::next(){
 	currentFrame++;
 
@@ -77,4 +82,8 @@ std::shared_ptr<Animation::Keyframe> Animation::Set::current(){
 	}
 
 	return 0;
+}
+
+unsigned int Animation::Set::currentIndex(){
+	return currentFrame;
 }

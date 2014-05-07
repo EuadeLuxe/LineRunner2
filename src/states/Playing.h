@@ -17,6 +17,10 @@
 #include "../buttons/RetryButton.h"
 
 class Playing:public std::enable_shared_from_this<Playing>, public bb::State, public bb::Device{
+	public:
+		const float fallSpeed = 500.0f;
+		const float fallFactor = 800.0f;
+
 	private:
 		std::shared_ptr<LineRunner2> game;
 		std::shared_ptr<bb::Input> input;

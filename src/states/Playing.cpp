@@ -59,28 +59,22 @@ void Playing::load(){
 	auto frameTile = bb::vec2(1.0f/16.0f, 1.0f/8.0f);
 
 	auto idle = std::shared_ptr<Animation::Set>(new Animation::Set(true));
-	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(0.0f, 7.0f))));
-	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(1.0f, 7.0f))));
-	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(2.0f, 7.0f))));
-	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(3.0f, 7.0f))));
-	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(4.0f, 7.0f))));
-	idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(5.0f, 7.0f))));
-
 	auto run = std::shared_ptr<Animation::Set>(new Animation::Set(true));
-	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(0.0f, 6.0f))));
-	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(1.0f, 6.0f))));
-	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(2.0f, 6.0f))));
-	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(3.0f, 6.0f))));
-	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(4.0f, 6.0f))));
-	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(5.0f, 6.0f))));
-	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(6.0f, 6.0f))));
-	run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(7.0f, 6.0f))));
+	auto jump = std::shared_ptr<Animation::Set>(new Animation::Set(false));
+	auto roll = std::shared_ptr<Animation::Set>(new Animation::Set(false));
 
-	auto animation = std::shared_ptr<Animation>(new Animation(8.0f));
+	for(float i = 0.0f; i < 8.0f; i++){
+		idle->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(i, 7.0f))));
+		run->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(i, 6.0f))));
+		jump->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(i, 5.0f))));
+		roll->add(std::shared_ptr<Animation::Keyframe>(new Animation::Keyframe(frameTile, frameTile*bb::vec2(i, 4.0f))));
+	}
+
+	auto animation = std::shared_ptr<Animation>(new Animation(16.0f));
 	animation->add("idle", idle);
 	animation->add("run", run);
-
-	animation->set("run");
+	animation->add("jump", jump);
+	animation->add("roll", roll);
 
 	auto player = std::shared_ptr<Player>(new Player("player"));
 	player->addComponent("Texture", texture);
@@ -146,8 +140,10 @@ void Playing::logic(const float deltaTime){
 	if(hasStarted && deltaTime < 1.0f && !paused){
 		game->background->update(deltaTime);
 
+		auto player = std::static_pointer_cast<Player>(renderer->getEntity("player"));
+
 		// update player animation
-		auto animation = std::static_pointer_cast<Animation>(renderer->getEntity("player")->getComponent("Animation"));
+		auto animation = std::static_pointer_cast<Animation>(player->getComponent("Animation"));
 		animation->update(deltaTime);
 
 		if(countdown < 0.0f){
@@ -155,18 +151,34 @@ void Playing::logic(const float deltaTime){
 			level->update(deltaTime);
 
 			// jump/fall
-			auto player = std::static_pointer_cast<Player>(renderer->getEntity("player"));
 			auto position = std::static_pointer_cast<bb::Position2D>(player->getComponent("Position"));
 
-			if(player->jump && !player->jumping){
-				position->direction.y = 400.0f;
+			if(!player->rolling && player->jump && !player->jumping){
+				position->direction.y = fallSpeed;
 				player->jumping = true;
+				animation->set("jump");
 			}
 
 			position->position.y += position->direction.y*deltaTime;
 
-			if(position->direction.y > -400.0f){
-				position->direction -= deltaTime*800.0f;
+			if(position->direction.y > -fallSpeed){
+				position->direction.y -= deltaTime*fallFactor;
+			}
+
+			// roll
+			if(player->roll && !player->rolling){
+				if(player->jumping){
+					player->jumping = false;
+					position->direction.y = -fallSpeed;
+				}
+
+				player->rolling = true;
+				animation->set("roll");
+			}
+
+			if(player->rolling && animation->current()->currentIndex() == 7){ // last frame
+				player->rolling = false;
+				animation->set("run");
 			}
 		}
 		else{
@@ -176,6 +188,7 @@ void Playing::logic(const float deltaTime){
 			if(countdown < 0.0f){
 				auto obj = std::static_pointer_cast<bb::Object2D>(countdownText->getComponent("Object2D"));
 				obj->visible = false;
+				animation->set("run");
 			}
 			else if(countdown < 1.0f){
 				countdownText->setText("1");
@@ -203,14 +216,14 @@ void Playing::retry(){
 	auto countdownText = std::static_pointer_cast<bb::Text>(textRenderer->getEntity("countdown"));
 	countdownText->setText("3");
 
-	auto obj = std::static_pointer_cast<bb::Object2D>(countdownText->getComponent("Object2D"));
-	obj->visible = true;
+	std::static_pointer_cast<bb::Object2D>(countdownText->getComponent("Object2D"))->visible = true;
+	std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"))->visible = false;
 
-	obj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
-	obj->visible = false;
+	// reset player
+	auto player = renderer->getEntity("player");
 
-	auto position = std::static_pointer_cast<bb::Position2D>(renderer->getEntity("player")->getComponent("Position"));
-	position->position.y = game->wndSize[1]/3;
+	std::static_pointer_cast<Animation>(player->getComponent("Animation"))->set("idle");
+	std::static_pointer_cast<bb::Position2D>(player->getComponent("Position"))->position.y = game->wndSize[1]/3;
 
 	level->reset();
 }

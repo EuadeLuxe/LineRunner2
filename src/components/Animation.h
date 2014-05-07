@@ -28,9 +28,11 @@ class Animation:public bb::Component{
 
 				void add(const std::shared_ptr<Keyframe> frame);
 				void set(const unsigned int i);
+				void reset();
 				void next();
 
 				std::shared_ptr<Keyframe> current();
+				unsigned int currentIndex();
 		};
 
 	private:
