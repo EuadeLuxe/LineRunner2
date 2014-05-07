@@ -8,7 +8,10 @@
 #include "../systems/Renderer.h"
 #include "../systems/TextRenderer.h"
 #include "../entities/Button.h"
-#include "../buttons/SwitchStateButton.h"
+#include "../entities/Checkbox.h"
+#include "../gui/SwitchStateButton.h"
+#include "../gui/SaveButton.h"
+#include "../gui/FsCheckbox.h"
 
 class Settings:public bb::State{
 	private:
@@ -17,6 +20,8 @@ class Settings:public bb::State{
 		std::unique_ptr<Renderer> renderer;
 		std::unique_ptr<TextRenderer> textRenderer;
 		std::shared_ptr<SwitchStateButton> backButton;
+		std::shared_ptr<SaveButton> saveButton;
+		std::shared_ptr<FsCheckbox> fsCheckbox;
 
 	public:
 		Settings(const std::shared_ptr<LineRunner2> game);

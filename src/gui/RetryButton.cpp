@@ -9,7 +9,7 @@ void RetryButton::addSound(const std::shared_ptr<bb::Sound> sound){
 	this->sound = std::shared_ptr<bb::SoundSource>(new bb::SoundSource(sound, bb::vec3(), false));
 }
 
-void RetryButton::call(){
+void RetryButton::call(const std::shared_ptr<bb::Entity> entity){
 	if(sound){
 		sound->play();
 	}

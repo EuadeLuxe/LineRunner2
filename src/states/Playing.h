@@ -13,8 +13,8 @@
 #include "../entities/Player.h"
 #include "../components/Animation.h"
 #include "../components/Color.h"
-#include "../buttons/SwitchStateButton.h"
-#include "../buttons/RetryButton.h"
+#include "../gui/SwitchStateButton.h"
+#include "../gui/RetryButton.h"
 
 class Playing:public std::enable_shared_from_this<Playing>, public bb::State, public bb::Device{
 	public:

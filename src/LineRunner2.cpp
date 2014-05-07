@@ -55,6 +55,9 @@ void LineRunner2::load(){
 	loadTexture("exit", "res/textures/buttons/exit.tga");
 	loadTexture("back", "res/textures/buttons/back.tga");
 	loadTexture("retry", "res/textures/buttons/retry.tga");
+	loadTexture("save", "res/textures/buttons/save.tga");
+	loadTexture("checkbox", "res/textures/buttons/checkbox.tga");
+	loadTexture("checkbox_checked", "res/textures/buttons/checkbox_checked.tga");
 
 	loadTexture("bg", "res/textures/bg/bg.tga");
 	loadTexture("bg0", "res/textures/bg/bg0.tga");

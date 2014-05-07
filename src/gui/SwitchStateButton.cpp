@@ -9,7 +9,7 @@ void SwitchStateButton::addSound(const std::shared_ptr<bb::Sound> sound){
 	this->sound = std::shared_ptr<bb::SoundSource>(new bb::SoundSource(sound, bb::vec3(), false));
 }
 
-void SwitchStateButton::call(){
+void SwitchStateButton::call(const std::shared_ptr<bb::Entity> entity){
 	if(sound){
 		sound->play();
 	}

@@ -8,7 +8,7 @@
 #include "../systems/Renderer.h"
 #include "../systems/TextRenderer.h"
 #include "../entities/Button.h"
-#include "../buttons/SwitchStateButton.h"
+#include "../gui/SwitchStateButton.h"
 
 class Credits:public bb::State{
 	private:

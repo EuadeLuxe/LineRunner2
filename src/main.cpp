@@ -14,7 +14,9 @@
 // window
 std::string wndTitle = "LineRunner 2";
 unsigned int wndPosition[] = {50, 50};
-unsigned int wndSize[] = {1920, 1080};
+unsigned int wndSize[] = {1024, 576};
+unsigned int origWndSize[] = {1024, 576};
+float wndRatio[] = {1.0f, 1.0f};
 
 float fps = 0.0f, fps_frame = 0.0f, fps_time = 0.0f, fps_timebase = 0.0f, deltaTime = 0.0f; // fps
 
@@ -68,6 +70,8 @@ void mainLoop(){
 void reshape(const int w, const int h){
 	wndSize[0] = w;
 	wndSize[1] = h;
+	wndRatio[0] = float(origWndSize[0])/float(wndSize[0]);
+	wndRatio[1] = float(origWndSize[1])/float(wndSize[1]);
 
 	game->setViewport(w, h);
 }
@@ -77,13 +81,15 @@ void reshape(const int w, const int h){
  * */
 
 void keyPressed(unsigned char key, int x, int y){
-	y = wndSize[1]-y;
+	y = float(wndSize[1]-y)*wndRatio[1];
+	x = float(x)*wndRatio[0];
 
 	game->input->keyPressed(key, x, y);
 }
 
 void keyReleased(unsigned char key, int x, int y){
-	y = wndSize[1]-y;
+	y = float(wndSize[1]-y)*wndRatio[1];
+	x = float(x)*wndRatio[0];
 
 	game->input->keyReleased(key, x, y);
 	game->input->keyTyped(key, x, y);
@@ -92,7 +98,8 @@ void keyReleased(unsigned char key, int x, int y){
 void mousePressed(int key, int state, int x, int y){
 	bb::Device::BUTTON button;
 
-	y = wndSize[1]-y;
+	y = float(wndSize[1]-y)*wndRatio[1];
+	x = float(x)*wndRatio[0];
 
 	if(key == 0){
 		button = bb::Device::BUTTON::LEFT;
@@ -114,7 +121,8 @@ void mousePressed(int key, int state, int x, int y){
 }
 
 void mouseMoved(int x, int y){
-	y = wndSize[1]-y;
+	y = float(wndSize[1]-y)*wndRatio[1];
+	x = float(x)*wndRatio[0];
 
 	game->input->mouseMoved(x, y);
 }
@@ -138,6 +146,8 @@ int main(int argc, char** args){
 		if(root->get("wndSize")->value.size() == 2){
 			wndSize[0] = root->get("wndSize")->toInt(0);
 			wndSize[1] = root->get("wndSize")->toInt(1);
+			origWndSize[0] = root->get("wndSize")->toInt(0);
+			origWndSize[1] = root->get("wndSize")->toInt(1);
 		}
 	}
 

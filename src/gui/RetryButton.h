@@ -19,7 +19,7 @@ class RetryButton:public Command{
 
 		void addSound(const std::shared_ptr<bb::Sound> sound);
 
-		void call();
+		void call(const std::shared_ptr<bb::Entity> entity);
 };
 
 #endif
