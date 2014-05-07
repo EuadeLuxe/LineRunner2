@@ -163,7 +163,7 @@ int main(int argc, char** args){
 	glutIdleFunc(mainLoop);
 	glutDisplayFunc(mainLoop);
 
-	if(config.getRoot()->get("fullscreen")->toString() == "true"){
+	if(config.getRoot()->get("fullscreen")->toInt()){
 		glutFullScreen();
 	}
 

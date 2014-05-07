@@ -130,21 +130,21 @@ void LineRunner2::load(){
 
 	auto cloud1 = std::shared_ptr<bb::Entity>(new bb::Entity("cloud"));
 	cloud1->addComponent("Texture", texture);
-	cloud1->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(800.0f, wndSize[1]-50-texture->height()), bb::vec2(texture->getSize()))));
+	cloud1->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(700.0f, wndSize[1]-50-texture->height()), bb::vec2(texture->getSize()))));
 	cloud1->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	texture = textures["cloud2"];
 
 	auto cloud2 = std::shared_ptr<bb::Entity>(new bb::Entity("cloud"));
 	cloud2->addComponent("Texture", texture);
-	cloud2->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(1100.0f, wndSize[1]-60-texture->height()), bb::vec2(texture->getSize()))));
+	cloud2->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(1200.0f, wndSize[1]-60-texture->height()), bb::vec2(texture->getSize()))));
 	cloud2->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	texture = textures["cloud3"];
 
 	auto cloud3 = std::shared_ptr<bb::Entity>(new bb::Entity("cloud"));
 	cloud3->addComponent("Texture", texture);
-	cloud3->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(2400.0f, wndSize[1]-120-texture->height()), bb::vec2(texture->getSize()))));
+	cloud3->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(1900.0f, wndSize[1]-120-texture->height()), bb::vec2(texture->getSize()))));
 	cloud3->addComponent("Object2D", std::shared_ptr<bb::Object2D>(new bb::Object2D()));
 
 	// systems

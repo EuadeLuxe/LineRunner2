@@ -18,8 +18,8 @@
 
 class Playing:public std::enable_shared_from_this<Playing>, public bb::State, public bb::Device{
 	public:
-		const float fallSpeed = 500.0f;
-		const float fallFactor = 800.0f;
+		const static float fallSpeed;
+		const static float fallFactor;
 
 	private:
 		std::shared_ptr<LineRunner2> game;
@@ -46,6 +46,7 @@ class Playing:public std::enable_shared_from_this<Playing>, public bb::State, pu
 		void logic(const float deltaTime);
 		void render(const float deltaTime);
 
+		void lose(const float points);
 		void retry();
 		void keyTyped(unsigned char c, int x, int y);
 };

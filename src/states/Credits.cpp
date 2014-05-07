@@ -14,7 +14,7 @@ void Credits::load(){
 
 	auto logo = std::shared_ptr<bb::Entity>(new bb::Entity());
 	logo->addComponent("Texture", texture);
-	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(60, game->wndSize[1]-texture->height()-60), texture->getSize())));
+	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(60, game->wndSize[1]-texture->height()/2-60), bb::vec2(400.0f, 150.0f))));
 	logo->addComponent("Object2D", obj);
 
 	texture = game->textures["back"];
@@ -32,12 +32,12 @@ void Credits::load(){
 	title->setText("Credits");
 
 	auto content0 = std::shared_ptr<bb::Text>(new bb::Text());
-	content0->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(200, game->wndSize[1]/2+100), bb::vec2(40.0f))));
+	content0->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(200, game->wndSize[1]/2+200), bb::vec2(40.0f))));
 	content0->addComponent("Object2D", obj);
 	content0->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
 	content0->addComponent("Font", game->font);
 
-	content0->setText("This game was created by Marvin Blum.\nGet the game and source code on GitHub:\n\nhttps://github.com/DeKugelschieber/LineRunner2\n\nMain menu music: \"Revolve\" by cinematrik:\n\t\thttp://ccmixter.org/files/hisboyelroy/430\nIngame music: \"TONTURA\" by URB:\n\t\thttp://freemusicarchive.org/music/URB/U_END/09_urb_-_tontura");
+	content0->setText("This game was created by Marvin Blum.\nGet the game and source code on GitHub:\n\n\t\thttps://github.com/DeKugelschieber/LineRunner2\n\nMain menu music: \"Revolve\" by cinematrik:\n\t\thttp://ccmixter.org/files/hisboyelroy/430\nIngame music: \"TONTURA\" by URB:\n\t\thttp://freemusicarchive.org/music/URB/U_END/09_urb_-_tontura\n\nPlayer animation by BlueCobold\nWindows port by EuadeLuxe");
 
 	//// systems
 	input = std::shared_ptr<bb::Input>(new bb::Input());

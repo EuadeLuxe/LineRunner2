@@ -14,7 +14,7 @@ void Settings::load(){
 
 	auto logo = std::shared_ptr<bb::Entity>(new bb::Entity());
 	logo->addComponent("Texture", texture);
-	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(60, game->wndSize[1]-texture->height()-60), texture->getSize())));
+	logo->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(60, game->wndSize[1]-texture->height()/2-60), bb::vec2(400.0f, 150.0f))));
 	logo->addComponent("Object2D", obj);
 
 	texture = game->textures["back"];
