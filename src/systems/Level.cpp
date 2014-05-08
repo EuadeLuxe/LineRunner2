@@ -23,7 +23,7 @@ void Level::reset(){
 			position->position.x = last->position.x+last->size.x-10; // 10px overlap
 
 			if(rand()%100 < 30){ // 30% chance for a gap
-				position->position.x += 100+rand()%100;
+				position->position.x += 200+rand()%200;
 			}
 
 			position->size.x = 600+rand()%1000;
@@ -61,7 +61,7 @@ void Level::update(const float deltaTime){
 				position->position.x = last->position.x+last->size.x-10;
 
 				if(rand()%100 < 30){
-					position->position.x += 100+rand()%100;
+					position->position.x += 200+rand()%200;
 				}
 
 				position->size.x = 600+rand()%1000;

@@ -14,17 +14,20 @@
 #include "../gui/SaveButton.h"
 #include "../gui/FsCheckbox.h"
 #include "../gui/ResolutionButton.h"
+#include "../gui/SetKeyButton.h"
 
-class Settings:public std::enable_shared_from_this<Settings>, public bb::State{
+class Settings:public std::enable_shared_from_this<Settings>, public bb::State, public bb::Device{
 	private:
 		std::shared_ptr<LineRunner2> game;
 		std::shared_ptr<bb::Input> input;
 		std::unique_ptr<Renderer> renderer;
 		std::unique_ptr<TextRenderer> textRenderer;
+
 		std::shared_ptr<SwitchStateButton> backButton;
 		std::shared_ptr<SaveButton> saveButton;
 		std::shared_ptr<FsCheckbox> fsCheckbox;
 		std::shared_ptr<ResolutionButton> nextButton, previousButton;
+		std::shared_ptr<SetKeyButton> jumpButton, rollButton, pauseButton, retryButton;
 
 		static const unsigned int maxResolutions;
 		unsigned int resolutions[6][2] = {{1024, 576},
@@ -36,6 +39,7 @@ class Settings:public std::enable_shared_from_this<Settings>, public bb::State{
 
 		int resolution;
 		static const std::string saveFile;
+		SetKeyButton::CONTROL acceptKey;
 
 	public:
 		Settings(const std::shared_ptr<LineRunner2> game);
@@ -48,8 +52,11 @@ class Settings:public std::enable_shared_from_this<Settings>, public bb::State{
 		void logic(const float deltaTime);
 		void render(const float deltaTime);
 
+		void keyTyped(unsigned char c, int x, int y);
+
 		void nextRes();
 		void previousRes();
+		void setButton(const SetKeyButton::CONTROL control);
 		void save();
 };
 

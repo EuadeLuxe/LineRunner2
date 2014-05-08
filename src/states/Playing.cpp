@@ -1,7 +1,7 @@
 #include "Playing.h"
 
 const float Playing::fallSpeed = 500.0f;
-const float Playing::fallFactor = 800.0f;
+const float Playing::fallFactor = 1200.0f;
 
 Playing::Playing(const std::shared_ptr<LineRunner2> game){
 	this->game = game;
