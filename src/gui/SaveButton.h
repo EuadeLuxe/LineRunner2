@@ -6,12 +6,15 @@
 #include "../BurningByte/sound/SoundSource.h"
 #include "../components/Command.h"
 
+class Settings;
+
 class SaveButton:public Command{
 	private:
+		std::shared_ptr<Settings> settings;
 		std::shared_ptr<bb::SoundSource> sound;
 
 	public:
-		SaveButton();
+		SaveButton(const std::shared_ptr<Settings> settings);
 
 		void addSound(const std::shared_ptr<bb::Sound> sound);
 

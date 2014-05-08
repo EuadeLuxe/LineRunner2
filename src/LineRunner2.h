@@ -26,7 +26,7 @@ class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 		void loadSound(const std::string &name, const std::string &path);
 
 	public:
-		unsigned int wndSize[2];
+		unsigned int wndSize[2], wndMaxRes[2];
 
 		std::shared_ptr<bb::StateManager> stateManager;
 		std::shared_ptr<bb::Input> input;
@@ -40,7 +40,7 @@ class LineRunner2:public std::enable_shared_from_this<LineRunner2>{
 		std::unique_ptr<Background> background;
 		std::unique_ptr<bb::SoundSource> bgMusic;
 
-		LineRunner2(const unsigned int width, const unsigned int height);
+		LineRunner2(const unsigned int width, const unsigned int height, const unsigned int maxWidth, const unsigned int maxHeight);
 
 		void load();
 

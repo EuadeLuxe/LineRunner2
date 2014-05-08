@@ -5,9 +5,11 @@
 #include "states/Credits.h"
 #include "states/Playing.h"
 
-LineRunner2::LineRunner2(const unsigned int width, const unsigned int height){
+LineRunner2::LineRunner2(const unsigned int width, const unsigned int height, const unsigned int maxWidth, const unsigned int maxHeight){
 	wndSize[0] = width;
 	wndSize[1] = height;
+	wndMaxRes[0] = maxWidth;
+	wndMaxRes[1] = maxHeight;
 }
 
 void LineRunner2::loadTexture(const std::string &name, const std::string &path){
@@ -58,6 +60,8 @@ void LineRunner2::load(){
 	loadTexture("save", "res/textures/buttons/save.tga");
 	loadTexture("checkbox", "res/textures/buttons/checkbox.tga");
 	loadTexture("checkbox_checked", "res/textures/buttons/checkbox_checked.tga");
+	loadTexture("left", "res/textures/buttons/left.tga");
+	loadTexture("right", "res/textures/buttons/right.tga");
 
 	loadTexture("bg", "res/textures/bg/bg.tga");
 	loadTexture("bg0", "res/textures/bg/bg0.tga");

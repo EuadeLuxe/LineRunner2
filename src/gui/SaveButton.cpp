@@ -1,7 +1,8 @@
 #include "SaveButton.h"
+#include "../states/Settings.h"
 
-SaveButton::SaveButton(){
-
+SaveButton::SaveButton(const std::shared_ptr<Settings> settings){
+	this->settings = settings;
 }
 
 void SaveButton::addSound(const std::shared_ptr<bb::Sound> sound){
@@ -13,5 +14,5 @@ void SaveButton::call(const std::shared_ptr<bb::Entity> entity){
 		sound->play();
 	}
 
-	// ...
+	settings->save();
 }

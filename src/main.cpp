@@ -16,6 +16,7 @@ std::string wndTitle = "LineRunner 2";
 unsigned int wndPosition[] = {50, 50};
 unsigned int wndSize[] = {1024, 576};
 unsigned int origWndSize[] = {1024, 576};
+unsigned int wndMaxRes[] = {1024, 576};
 float wndRatio[] = {1.0f, 1.0f};
 
 float fps = 0.0f, fps_frame = 0.0f, fps_time = 0.0f, fps_timebase = 0.0f, deltaTime = 0.0f; // fps
@@ -39,7 +40,7 @@ float getFPS(){
 bool setup(){
 	srand(time(0));
 
-	game = std::shared_ptr<LineRunner2>(new LineRunner2(wndSize[0], wndSize[1]));
+	game = std::shared_ptr<LineRunner2>(new LineRunner2(wndSize[0], wndSize[1], wndMaxRes[0], wndMaxRes[1]));
 	game->load();
 
 	return true;
@@ -156,6 +157,9 @@ int main(int argc, char** args){
 	glutInitWindowPosition(wndPosition[0], wndPosition[1]);
 	glutInitWindowSize(wndSize[0], wndSize[1]);
 	glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE); // rgba, double buffer, NO depth buffer (GL_DEPTH)
+
+	wndMaxRes[0] = glutGet(GLUT_SCREEN_WIDTH);
+	wndMaxRes[1] = glutGet(GLUT_SCREEN_HEIGHT);
 
 	// gl3w init
 	if(!gl3wInit()){
