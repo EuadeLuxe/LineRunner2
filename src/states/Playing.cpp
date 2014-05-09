@@ -13,7 +13,7 @@ Playing::Playing(const std::shared_ptr<LineRunner2> game){
 
 void Playing::load(){
 	// read settings
-	unsigned char jumpKey, rollKey;
+	unsigned char jumpKey = 'W', rollKey = 'S';
 	bb::cfgFile file;
 
 	if(file.read(Settings::saveFile)){
