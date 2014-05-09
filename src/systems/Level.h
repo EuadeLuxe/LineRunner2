@@ -12,14 +12,14 @@ class Playing;
 
 class Level:public bb::System{
 	public:
-		const static float tolerance;
+		const static float tolerance, speedBoost, addSpeed; // in px
 
 	private:
 		std::shared_ptr<LineRunner2> game;
 		std::shared_ptr<Playing> playing;
 		std::shared_ptr<Player> player;
 		std::shared_ptr<bb::Position2D> last; // reference to last position object
-		float speed, way;
+		float initSpeed, speed, way, boost;
 
 	public:
 		Level(const std::shared_ptr<LineRunner2> game, const std::shared_ptr<Playing> playing, const std::shared_ptr<Player> player, const float speed);

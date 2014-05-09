@@ -2,18 +2,24 @@
 #include "../states/Playing.h"
 
 const float Level::tolerance = 20.0f;
+const float Level::speedBoost = 10000.0f;
+const float Level::addSpeed = 50.0f;
 
 Level::Level(const std::shared_ptr<LineRunner2> game, const std::shared_ptr<Playing> playing, const std::shared_ptr<Player> player, const float speed){
 	this->game = game;
 	this->playing = playing;
 	this->player = player;
 	this->speed = speed;
+	initSpeed = speed;
 	way = 0;
+	boost = speedBoost;
 }
 
 void Level::reset(){
 	last = std::shared_ptr<bb::Position2D>(new bb::Position2D());
+	speed = initSpeed;
 	way = 0;
+	boost = speedBoost;
 	bool first = true;
 
 	for(auto entity : entities){
@@ -46,6 +52,12 @@ void Level::reset(){
 
 void Level::update(const float deltaTime){
 	way += speed*deltaTime;
+	boost -= speed*deltaTime;
+
+	if(boost < 0.0f){
+		boost = speedBoost;
+		speed += addSpeed;
+	}
 
 	auto pPos = std::static_pointer_cast<bb::Position2D>(player->getComponent("Position"));
 

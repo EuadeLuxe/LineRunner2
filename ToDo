@@ -1,11 +1,14 @@
 Bugs:
 
-- removing intro state (order of commands)
+DONE - removing intro state (order of commands)
 DONE - removing input devices
 - OpenAL background noise
 DONE - nothing rendered in main menu
 
 Features:
 
+- map key bindigns ingame
+- add barricades
 - ask for exit
 - show start/settings/exit on button hover in main menu
+- highscore

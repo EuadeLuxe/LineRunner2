@@ -67,7 +67,7 @@ void Intro::logic(const float deltaTime){
 		duration->update(deltaTime);
 
 		if(duration->screen == 3){
-			//states->remove("intro");
+			game->stateManager->remove("intro");
 			game->stateManager->switchTo("mainmenu");
 		}
 	}
@@ -81,7 +81,7 @@ void Intro::render(const float deltaTime){
 
 void Intro::keyPressed(unsigned char c, int x, int y){
 	if(hasStarted){
-		//states->remove("intro");
+		game->stateManager->remove("intro");
 		game->stateManager->switchTo("mainmenu");
 	}
 }

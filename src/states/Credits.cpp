@@ -37,7 +37,7 @@ void Credits::load(){
 	content0->addComponent("Mesh", std::shared_ptr<bb::Mesh>(new bb::Mesh()));
 	content0->addComponent("Font", game->font);
 
-	content0->setText("This game was created by Marvin Blum.\nGet the game and source code on GitHub:\n\n\t\thttps://github.com/DeKugelschieber/LineRunner2\n\nMain menu music: \"Revolve\" by cinematrik:\n\t\thttp://ccmixter.org/files/hisboyelroy/430\nIngame music: \"TONTURA\" by URB:\n\t\thttp://freemusicarchive.org/music/URB/U_END/09_urb_-_tontura\n\nPlayer animation by BlueCobold\nWindows port by EuadeLuxe");
+	content0->setText("This game was created by Marvin Blum.\nGet the game and source code on GitHub:\n\n\t\thttps://github.com/DeKugelschieber/LineRunner2\n\nMain menu music: \"Revolve\" by cinematrik:\n\t\thttp://ccmixter.org/files/hisboyelroy/430\nIngame music: \"TONTURA\" by URB:\n\t\thttp://freemusicarchive.org/music/URB/U_END/09_urb_-_tontura\n\nWindows port by EuadeLuxe");
 
 	//// systems
 	input = std::shared_ptr<bb::Input>(new bb::Input());
