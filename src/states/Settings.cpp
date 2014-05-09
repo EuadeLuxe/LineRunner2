@@ -29,13 +29,13 @@ void Settings::load(){
 
 	if(file.read(saveFile)){
 		auto root = file.getRoot();
-		auto fs = root->get("fullscreen");
+		auto key = root->get("fullscreen");
 
-		if(!fs->getName().empty()){
-			check = fs->toInt();
+		if(!key->getName().empty()){
+			check = key->toInt();
 		}
 
-		auto key = root->get("jump");
+		key = root->get("jump");
 
 		if(!key->getName().empty()){
 			jk = key->toString();

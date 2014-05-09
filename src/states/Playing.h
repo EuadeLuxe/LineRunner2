@@ -6,6 +6,7 @@
 #include "../BurningByte/input/Device.h"
 #include "../BurningByte/render/gui/Text.h"
 #include "../LineRunner2.h"
+#include "Settings.h"
 #include "../systems/Renderer.h"
 #include "../systems/TextRenderer.h"
 #include "../systems/Level.h"
@@ -30,6 +31,7 @@ class Playing:public std::enable_shared_from_this<Playing>, public bb::State, pu
 
 		bool paused;
 		float countdown;
+		unsigned char pauseKey, retryKey;
 
 		std::shared_ptr<RetryButton> retryButton;
 		std::shared_ptr<SwitchStateButton> backButton;

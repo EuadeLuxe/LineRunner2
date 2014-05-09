@@ -9,8 +9,9 @@
 class Player:public bb::Entity, public bb::Device{
 	public:
 		bool jump, jumping, roll, rolling;
+		unsigned char jumpKey, rollKey;
 
-		Player(const std::string &name);
+		Player(const std::string &name, const unsigned char jumpKey, const unsigned char rollKey);
 
 		void keyPressed(unsigned char key, int x, int y);
 		void keyReleased(unsigned char key, int x, int y);

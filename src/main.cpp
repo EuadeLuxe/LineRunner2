@@ -50,17 +50,12 @@ bool setup(){
  * main loop
  * */
 
-void render(){
-	game->render(deltaTime);
-
-	glutSwapBuffers();
-}
-
 void mainLoop(){
 	deltaTime = 1.0f/fps;
 
-	render();
 	game->logic(deltaTime);
+	game->render(deltaTime);
+	glutSwapBuffers();
 	getFPS();
 }
 

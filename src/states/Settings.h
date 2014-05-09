@@ -38,10 +38,11 @@ class Settings:public std::enable_shared_from_this<Settings>, public bb::State, 
 										  {2560, 1440}};
 
 		int resolution;
-		static const std::string saveFile;
 		SetKeyButton::CONTROL acceptKey;
 
 	public:
+		static const std::string saveFile;
+
 		Settings(const std::shared_ptr<LineRunner2> game);
 
 		void load();

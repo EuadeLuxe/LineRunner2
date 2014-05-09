@@ -7,12 +7,45 @@ Playing::Playing(const std::shared_ptr<LineRunner2> game){
 	this->game = game;
 	paused = false;
 	countdown = 3.0f;
+	pauseKey = 'P';
+	retryKey = 'R';
 }
 
 void Playing::load(){
-	game->bgMusic->pause();
+	// read settings
+	unsigned char jumpKey, rollKey;
+	bb::cfgFile file;
+
+	if(file.read(Settings::saveFile)){
+		auto root = file.getRoot();
+		auto key = root->get("jump");
+
+		if(!key->getName().empty() && key->toString().size()){
+			jumpKey = std::toupper(key->toString().at(0));
+		}
+
+		key = root->get("roll");
+
+		if(!key->getName().empty() && key->toString().size()){
+			rollKey = std::toupper(key->toString().at(0));
+		}
+
+		key = root->get("pause");
+
+		if(!key->getName().empty() && key->toString().size()){
+			pauseKey = std::toupper(key->toString().at(0));
+		}
+
+		key = root->get("retry");
+
+		if(!key->getName().empty() && key->toString().size()){
+			retryKey = std::toupper(key->toString().at(0));
+		}
+	}
 
 	// music
+	game->bgMusic->pause();
+
 	music = std::unique_ptr<bb::SoundSource>(new bb::SoundSource(game->sounds["ingame"], bb::vec3(), true));
 	music->play();
 
@@ -91,7 +124,7 @@ void Playing::load(){
 	auto idle = std::shared_ptr<Animation::Set>(new Animation::Set(true));
 	auto run = std::shared_ptr<Animation::Set>(new Animation::Set(true));
 	auto jump = std::shared_ptr<Animation::Set>(new Animation::Set(false));
-	auto roll = std::shared_ptr<Animation::Set>(new Animation::Set(false));
+	auto roll = std::shared_ptr<Animation::Set>(new Animation::Set(true));
 	auto fall = std::shared_ptr<Animation::Set>(new Animation::Set(true));
 
 	for(float i = 0.0f; i < 8.0f; i++){
@@ -113,7 +146,7 @@ void Playing::load(){
 	animation->add("roll", roll);
 	animation->add("fall", fall);
 
-	auto player = std::shared_ptr<Player>(new Player("player"));
+	auto player = std::shared_ptr<Player>(new Player("player", jumpKey, rollKey));
 	player->addComponent("Texture", texture);
 	player->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(game->wndSize[0]/4, game->wndSize[1]/3), bb::vec2(texture->width()/16, texture->height()/8))));
 	player->addComponent("Object2D", obj);
@@ -131,15 +164,26 @@ void Playing::load(){
 
 	// fill in 20 blocks (or "buildings")
 	auto color = std::shared_ptr<Color>(new Color(bb::vec3(97.0f/256.0f, 131.0f/256.0f, 96.0f/256.0f)));
+	auto boxColor = std::shared_ptr<Color>(new Color(bb::vec3(139.0f/256.0f, 174.0f/256.0f, 134.0f/256.0f)));
 
-	for(int i = 0; i < 20; i++){
+	for(int i = 0; i < 10; i++){
+		auto building = std::shared_ptr<bb::Entity>(new bb::Entity("b"));
+		building->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), bb::vec2())));
+		building->addComponent("Object2D", obj);
+		building->addComponent("Color", color);
+
 		auto box = std::shared_ptr<bb::Entity>(new bb::Entity());
-		box->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(i*10, 0.0f), bb::vec2(10.0f))));
+		box->addComponent("Position", std::shared_ptr<bb::Position2D>(new bb::Position2D(bb::vec2(), bb::vec2(30+rand()%100, 40.0f))));
 		box->addComponent("Object2D", obj);
-		box->addComponent("Color", color);
+		box->addComponent("Color", boxColor);
 
-		renderer->addEntity(box);
-		level->addEntity(box);
+		renderer->addEntity(building);
+		level->addEntity(building);
+
+		if(rand()%100 < 50){
+			renderer->addEntity(box);
+			level->addEntity(box);
+		}
 	}
 
 	level->reset();
@@ -192,7 +236,7 @@ void Playing::logic(const float deltaTime){
 			// jump/fall
 			auto position = std::static_pointer_cast<bb::Position2D>(player->getComponent("Position"));
 
-			if(!player->rolling && player->jump && !player->jumping){
+			if(player->jump && !player->jumping){
 				position->direction.y = fallSpeed;
 				player->jumping = true;
 				animation->set("jump");
@@ -212,14 +256,14 @@ void Playing::logic(const float deltaTime){
 			if(player->roll && !player->rolling){
 				if(player->jumping){
 					player->jumping = false;
-					position->direction.y = -fallSpeed;
+					position->direction.y = -fallSpeed*2.0f;
 				}
 
 				player->rolling = true;
 				animation->set("roll");
 			}
 
-			if(player->rolling && animation->current()->currentIndex() == 7){ // last frame
+			if(player->rolling && !player->roll && animation->current()->currentIndex() == 7){ // last frame
 				player->rolling = false;
 				animation->set("run");
 			}
@@ -285,7 +329,9 @@ void Playing::retry(){
 }
 
 void Playing::keyTyped(unsigned char key, int x, int y){
-	if(key == 27){ // ESC
+	unsigned char c = std::toupper(key);
+
+	if(c == pauseKey){ // ESC
 		auto pausedObj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));
 		auto buttonObj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("retry")->getComponent("Object2D"));
 
@@ -304,5 +350,8 @@ void Playing::keyTyped(unsigned char key, int x, int y){
 
 		pausedObj->visible = paused;
 		buttonObj->visible = paused;
+	}
+	else if(c == retryKey){
+		retry();
 	}
 }
