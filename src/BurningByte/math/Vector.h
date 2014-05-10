@@ -1,12 +1,16 @@
 /*
  * Vector
  * Author: Marvin Blum
- * Last Update: 23/12/2013 00:24
+ * Last Update: 10/05/2013 12:13
+ *  - Fixed bug in Visual Studio
  * */
 
 #ifndef VECTOR_H_
 #define VECTOR_H_
-
+// Necessary since M_PI will only be defined in VS if _USE_MATH_DEFINES is defined
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#endif // _USE_MATH_DEFINES
 #include <math.h>
 #include <stdlib.h>
 

@@ -1,5 +1,13 @@
 #include "cfgFile.h"
 
+/*
+ * ------------------------------
+ * EuadeLuxe
+ * 10/05/2014 12:21
+ * Added locale support for windows.
+ */
+#include <locale>
+
 namespace bb{
 
 cfgFile::cfgFile(){
@@ -70,7 +78,7 @@ cfgFile::Node::TYPE cfgFile::testType(const std::string &value){
 	Node::TYPE type = Node::TYPE::STRING;
 
 	for(auto v : value){
-		if(!std::isdigit(v) && v != '.'){
+		if(!std::isdigit(v, std::locale()) && v != '.'){
 			type = Node::TYPE::STRING;
 
 			break;

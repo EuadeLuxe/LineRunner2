@@ -1,12 +1,17 @@
 /*
  * Matrix
  * Author: Marvin Blum
- * Last Update: 2014/04/07 16:58
+ * Last Update: 2014/05/10 12:10
+ *	- Made include of <math.h> compatible with Visual Studio
  * */
 
 #ifndef MATRIX_H_
 #define MATRIX_H_
 
+// Necessary since M_PI will only be defined in VS if _USE_MATH_DEFINES is defined
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#endif //_USE_MATH_DEFINES
 #include <math.h>
 #include "Vector.h"
 

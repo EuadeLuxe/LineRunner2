@@ -21,25 +21,25 @@ void Playing::load(){
 		auto key = root->get("jump");
 
 		if(!key->getName().empty() && key->toString().size()){
-			jumpKey = std::toupper(key->toString().at(0));
+			jumpKey = toupper(key->toString().at(0));
 		}
 
 		key = root->get("roll");
 
 		if(!key->getName().empty() && key->toString().size()){
-			rollKey = std::toupper(key->toString().at(0));
+			rollKey = toupper(key->toString().at(0));
 		}
 
 		key = root->get("pause");
 
 		if(!key->getName().empty() && key->toString().size()){
-			pauseKey = std::toupper(key->toString().at(0));
+			pauseKey = toupper(key->toString().at(0));
 		}
 
 		key = root->get("retry");
 
 		if(!key->getName().empty() && key->toString().size()){
-			retryKey = std::toupper(key->toString().at(0));
+			retryKey = toupper(key->toString().at(0));
 		}
 	}
 
@@ -329,7 +329,7 @@ void Playing::retry(){
 }
 
 void Playing::keyTyped(unsigned char key, int x, int y){
-	unsigned char c = std::toupper(key);
+	unsigned char c = toupper(key);
 
 	if(c == pauseKey){ // ESC
 		auto pausedObj = std::static_pointer_cast<bb::Object2D>(renderer->getEntity("paused")->getComponent("Object2D"));

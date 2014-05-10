@@ -7,7 +7,19 @@
 #ifndef PLYFILE_H_
 #define PLYFILE_H_
 
+/*
+ * EuadeLuxe
+ * 10/05/2014 16:29
+ * Surrounded macro definition in order to avoid
+ * redefinition. In Release build it is pre-defined
+ * because the command line wide string given gy
+ * windows has to be converted to a narrow string
+ * using an "unsafe" function (wcstombs). Its "safe"
+ * counterpart did not work for some reason.... :?
+ */
+#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
+#endif //_CRT_SECURE_NO_WARNINGS
 
 #include <vector>
 #include <sstream>

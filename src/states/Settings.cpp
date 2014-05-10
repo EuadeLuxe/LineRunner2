@@ -3,6 +3,13 @@
 const unsigned int Settings::maxResolutions = 6;
 const std::string Settings::saveFile = "settings.cfg";
 
+const unsigned int Settings::resolutions[6][2] = { { 1024, 576 },
+												   { 1280, 720 },
+												   { 1366, 786 },
+												   { 1600, 900 },
+												   { 1920, 1080 },
+												   { 2560, 1440 } };
+
 Settings::Settings(const std::shared_ptr<LineRunner2> game){
 	this->game = game;
 	resolution = 0;
@@ -322,7 +329,7 @@ void Settings::keyTyped(unsigned char c, int x, int y){
 	if(acceptKey){
 		std::static_pointer_cast<bb::Object2D>(textRenderer->getEntity("hint")->getComponent("Object2D"))->visible = false;
 		std::string k;
-		k += std::toupper(c);
+		k += toupper(c);
 
 		if(acceptKey == SetKeyButton::CONTROL::JUMP){
 			auto key = std::static_pointer_cast<bb::Text>(textRenderer->getEntity("jump"));

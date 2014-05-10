@@ -16,6 +16,12 @@
 #include "../gui/ResolutionButton.h"
 #include "../gui/SetKeyButton.h"
 
+/*
+ * EuadeLuxe
+ * 10/05/2014 12:43
+ * Moved resolutions declaration into .cpp file.
+ */
+
 class Settings:public std::enable_shared_from_this<Settings>, public bb::State, public bb::Device{
 	private:
 		std::shared_ptr<LineRunner2> game;
@@ -30,12 +36,7 @@ class Settings:public std::enable_shared_from_this<Settings>, public bb::State, 
 		std::shared_ptr<SetKeyButton> jumpButton, rollButton, pauseButton, retryButton;
 
 		static const unsigned int maxResolutions;
-		unsigned int resolutions[6][2] = {{1024, 576},
-									  	  {1280, 720},
-									  	  {1366, 786},
-									  	  {1600, 900},
-									  	  {1920, 1080},
-										  {2560, 1440}};
+		static const unsigned int resolutions[6][2];
 
 		int resolution;
 		SetKeyButton::CONTROL acceptKey;

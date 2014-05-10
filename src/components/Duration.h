@@ -3,13 +3,20 @@
 
 #include "../BurningByte/Component.h"
 
+/*
+ * EuadeLuxe
+ * 10/05/2014 12:25
+ * Fixed bug in Duration::STAGE enum. IN and OUT are defined
+ * macros in minwindef.h (windows-specific)
+ */
+
 class Duration:public bb::Component{
 	public:
 		enum STAGE{
-			WAIT,
-			IN,
-			HOLD,
-			OUT
+			STAGE_WAIT,
+			STAGE_IN,
+			STAGE_HOLD,
+			STAGE_OUT
 		};
 
 		STAGE stage;

@@ -123,7 +123,14 @@ void mouseMoved(int x, int y){
 	game->input->mouseMoved(x, y);
 }
 
+#if defined(DEBUG)
 int main(int argc, char** args){
+#else
+#pragma comment(lib, "shell32.lib")
+#include <Windows.h>
+#include <shellapi.h>
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){
+#endif // DEBUG
 	// read settings
 	bb::cfgFile config;
 
@@ -148,7 +155,30 @@ int main(int argc, char** args){
 	}
 
 	// GLUT init
+#if !defined(DEBUG)
+	int argc = 0;
+	wchar_t** argsw = CommandLineToArgvW(GetCommandLineW(), &argc);
+	char** args = new char*[argc];
+	for (int i = 0; i < argc; ++i)
+	{
+		args[i] = new char[lstrlenW(argsw[i]) + 1];
+		size_t conv = 0;
+		wcstombs(args[i], argsw[i], lstrlenW(argsw[i]));
+		args[lstrlenW(argsw[i])] = '\0';
+	}
+
 	glutInit(&argc, args);
+
+	for (int i = 0; i < argc; ++i)
+	{
+		delete[] args[i];
+	}
+	delete[] args;
+
+	LocalFree(argsw);
+#else
+	glutInit(&argc, args);
+#endif // DEBUG
 	glutInitWindowPosition(wndPosition[0], wndPosition[1]);
 	glutInitWindowSize(wndSize[0], wndSize[1]);
 	glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE); // rgba, double buffer, NO depth buffer (GL_DEPTH)
@@ -156,18 +186,18 @@ int main(int argc, char** args){
 	wndMaxRes[0] = glutGet(GLUT_SCREEN_WIDTH);
 	wndMaxRes[1] = glutGet(GLUT_SCREEN_HEIGHT);
 
-	// gl3w init
-	if(!gl3wInit()){
-		std::cerr<<"Could not initialize gl3w!"<<std::endl;
-		return 1;
-	}
-
 	// ALUT init
 	alutInit(&argc, args);
 	alGetError(); // clear error bit
 
 	// GLUT window
 	glutCreateWindow((char*)wndTitle.c_str());
+
+	// gl3w init
+	if (gl3wInit()){
+		std::cerr << "Could not initialize gl3w!" << std::endl;
+		return 1;
+	}
 	glutReshapeFunc(reshape);
 	glutIdleFunc(mainLoop);
 	glutDisplayFunc(mainLoop);
@@ -183,7 +213,7 @@ int main(int argc, char** args){
 	glutPassiveMotionFunc(mouseMoved); // (int x, int y)
 	glutMotionFunc(mouseMoved); // (int x, int y)
 
-	if(!setup()){
+	if (!setup()){
 		return 2;
 	}
 
